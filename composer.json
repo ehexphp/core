@@ -14,5 +14,15 @@
             "email": "samson.oyetola@xamtax.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src"
+        },
+        "files": [
+            "src/core/__init.php"
+        ]
+    }
 }
