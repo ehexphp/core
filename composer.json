@@ -22,7 +22,7 @@
             "": "src"
         },
         "files": [
-            "src/core/__init.php"
+            "src/config/__init.php"
         ]
     }
 }
