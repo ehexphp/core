@@ -209,7 +209,7 @@ class Db1
                     td{ border-bottom:1px solid #27aad6; padding-top:5px;}
                     .ex_right{float:right;}
                 </style>";
-        $script = "<script src='" . shared_asset('jquery/js/jquery3.3.1.min.js') . "'></script><script>  $(function(){  $('#model_search').on('keyup', function(){ Html1.enableSearchFilter('model_search', 'model_table', 'tr'); })  }) </script>";
+        $script = "<script src='" . asset('default/jquery/js/jquery3.3.1.min.js') . "'></script><script>  $(function(){  $('#model_search').on('keyup', function(){ Html1.enableSearchFilter('model_search', 'model_table', 'tr'); })  }) </script>";
         Console1::println($style . $script . '<strong>Welcome to Ehex (ex). DB Smart Help</strong> <a href="' . Url1::getCurrentUrl(false) . '" style="float:right;text-decoration: none">&hookleftarrow; Go Back </a><hr/><small>You can either open this interface by adding <code>?db_help</code> to your url or <code>Db1::help();</code> to your Config::onDebug() method, located in .config.php file while your DEBUG_MODE is set to true. This interface enables you to manage your database models with ease. 
         <br/><small>Please be sure to change your APP_KEY to the below in your .config file for maximum security. <em style=\'font-weight: 800;color:gray\'><br/><strong>APP_KEY = base64:' . password_hash(Math1::getUniqueId(), 1) . '</strong></small>
         <br/><code class="ex_note">Please Note that Action Here Cannot Be Undo.</code></small>');
@@ -1846,7 +1846,7 @@ abstract class Model1 extends Controller1
     static function singleColumnList($arr = [], $columnKeyName = null)
     {
         $buf = [];
-        foreach ($arr as $key => $value) $buf[] = ($columnKeyName) ? $value[$columnKeyName] : $value;
+        foreach (Array1::makeArray($arr) as $key => $value) $buf[] = ($columnKeyName) ? $value[$columnKeyName] : $value;
         return $buf;
     }
 
@@ -2731,6 +2731,8 @@ abstract class AuthModel1 extends Model1
     static function logout($redirectTo = '/')
     {
         Config1::onLogout();
+        session_destroy();
+        unset($_SESSION);
         if (Session1::deleteUserInfo()) {
             Url1::redirectIf($redirectTo, 'Logout Successfully!', true);
             return true;

@@ -35,16 +35,13 @@
  * @filesource
  */
 
-
 // is php version 7+
 if(version_compare(PHP_VERSION, '7.0.0', '<=')) die('<p>Ehex Requires (PHP VERSION 7+)</p>');
 
-
-
 //  Define Current Location
 const DS = DIRECTORY_SEPARATOR;
-define('BASE_PATH', BASE_PATH ?? dirname($_SERVER['SCRIPT_FILENAME']).DS);
-const PATH_EHEX_LIBRARY = EHEX_PATH ?? BASE_PATH.'vendor'.DS.'ehexphp'.DS.'core'.DS.'src'.DS;
+define('BASE_PATH', dirname($_SERVER['SCRIPT_FILENAME']).DS);
+const PATH_EHEX_LIBRARY = BASE_PATH.'vendor'.DS.'ehexphp'.DS.'core'.DS.'src'.DS;
 
 // Define Real-Path Declaration... Changeable
 const PATH_APP = BASE_PATH . 'app' . DS;
@@ -61,12 +58,12 @@ const PATH_SHARED = PATH_EHEX_LIBRARY . 'shared' . DS;
 const PATH_SHARED_APP = PATH_SHARED . 'app' . DS;
 const PATH_SHARED_RESOURCE = PATH_SHARED . 'resources' . DS;
 
-
 /************************************************
  *  Primary files. For Debugging and ENV
  ************************************************/
-include BASE_PATH . 'vendor/autoload.php';
+//include BASE_PATH . 'vendor/autoload.php';
 include PATH_EHEX_LIBRARY . 'config/env.php';
+
 
 /**
  * Check app debug state
@@ -102,7 +99,6 @@ require PATH_EHEX_LIBRARY . 'EasyDb.php';
 require PATH_EHEX_LIBRARY . 'EasyDataSet.php';
 require PATH_EHEX_LIBRARY . 'EasyForm.php';
 
-
 /************************************************
  *  Others, like function list and Simple Html Dom
  ************************************************/
@@ -119,6 +115,9 @@ include PATH_EHEX_LIBRARY . 'config/translator.php';           // Language Trans
 include PATH_EHEX_LIBRARY . 'config/mail.php';                 // Mailer
 include PATH_EHEX_LIBRARY . 'config/file.php';                 // File Session and File Database
 
+
+//dd(app_class_paths());
+
 // Ehex Classes Autoload
 FileManager1::autoClassRecursiveLoad(
     array_merge(
@@ -133,5 +132,9 @@ FileManager1::autoClassRecursiveLoad(
  ************************************************/
 include PATH_EHEX_LIBRARY . 'config/error.php';                // Error Handler
 include PATH_EHEX_LIBRARY . 'config/route.php';                // Route  / and Init Route like Login/ Register
+
+die("Work DONE...");
+
+
 
 

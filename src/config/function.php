@@ -98,7 +98,9 @@ function dd(...$logArr){
  * Use for debugging but don't end page
  * @param mixed ...$logArr
  */
-function d(...$logArr){ foreach ($logArr as $data) Util1::var_dump($data); }
+function d(...$logArr){
+    foreach ($logArr as $data) Util1::var_dump($data);
+}
 
 /**
  * if data is set and data not null
@@ -138,7 +140,7 @@ function app_class_paths(){
 
         // include App Layout Dynamic Class Profile
         @FileManager1::getDirectoriesFolders([rtrim(PATH_LAYOUTS, DS), rtrim(PATH_PLUGINS, DS)], '', 'inc/'),
-        Config1::ENABLE_INCLUDES_SHARED ?
+        Config1::USE_SHARED_APP ?
                 array_merge(
                     [PATH_SHARED_APP],
                     FileManager1::getDirectoriesFolders([PATH_SHARED_RESOURCE.'views/layouts', PATH_SHARED_RESOURCE.'plugins'], '', 'inc/')
@@ -168,7 +170,7 @@ function app_class_list($typeList = [AuthModel1::class, Model1::class, Controlle
         $name = str_replace( '.php', '', str_replace( '.class.php', '', $name ));
         if( class_exists($name) && in_array(get_parent_class($name), Array1::toArray($typeList))) $model[] = $name;
     }
-    $model = array_diff($model, Config1::EXCLUDE_CLASS);
+    $model = array_diff($model, Config1::EXCLUDE_AUTOLOAD_CLASS);
     return $__ENV['app_class_with_interface'][$key] = $model;
 }
 
@@ -707,11 +709,11 @@ function path_main_url($path = '')
     if(Array1::exists($path_main_url_buffer, $path)){
         return $path_main_url_buffer[$path];
     }
-
     // remove /
     if(!String1::is_empty($path)) {
         $path = '/'.ltrim($path, '/');
     }
+
 
 //    $result =  rtrim(Url1::getHostName().str_replace('index.php', '', $_SERVER['PHP_SELF']), '/').$path;
 //    $path_main_url_buffer[$path] = $result;
@@ -757,15 +759,24 @@ function path_current(){
  * Get Assets files
  * @param string $path
  * @param bool $findInSharedAssets
- * @return string Assets Path [ http://localhost/Project-Ehex/resources/assets ]
- * Assets Path [ http://localhost/Project-Ehex/resources/assets ]
+ * @return string Assets Path [ http://localhost/Project-Ehex/assets ]
+ * Assets Path [ http://localhost/Project-Ehex/assets ]
  */
-function asset($path = '', $findInSharedAssets = false){ return path_asset_url($path, $findInSharedAssets); }
-function path_asset_url($path = '', $findInSharedAssets = false){
-    if($findInSharedAssets) return path_shared_asset_url($path);
-    return  path_main_url().'/resources/assets'.((!empty($path))?  '/'.trim($path, '/'): '');
+function asset($path = '', $findInSharedAssets = false){
+    return path_asset_url($path, $findInSharedAssets);
 }
-function path_asset($path = '') { return BASE_PATH.'assets'.((!empty($path))?  '/'.trim($path, '/'): ''); }
+
+function path_asset_url($path = '', $findInSharedAssets = false){
+    if($findInSharedAssets) {
+        return path_shared_asset_url($path);
+    }
+
+    return  '/assets'.((!empty($path))?  '/'.trim($path, '/'): '');
+}
+
+function path_asset($path = '') {
+    return BASE_PATH.'assets'.((!empty($path))?  '/'.trim($path, '/'): '');
+}
 
 
 
@@ -778,53 +789,6 @@ function path_asset($path = '') { return BASE_PATH.'assets'.((!empty($path))?  '
  */
 function path_app($path = ''){ return rtrim(PATH_APP.ltrim($path, '/'), '/'); }
 
-
-
-
-
-/**
- * Shared Path Information
- *
- * @param string $path
- * @param string $directory
- * @return string
- */
-function path_shared($path = '', $directory = ''){ return (!empty($path))? PATH_SHARED.$directory.'/'.ltrim($path, '/'): PATH_SHARED.$directory; }
-
-/**
- * @param string $path
- * @return string
- */
-function path_shared_resources($path = ''){ return path_shared($path, 'resources'); }
-
-/**
- * @param string $path
- * @return string
- */
-function path_shared_app($path = ''){ return path_shared($path, 'app'); }
-
-/**
- * @param string $path
- * @return string
- */
-function path_shared_asset($path = ''){ return path_shared($path, 'resources/assets'); }
-
-/**
- * @param string $path
- * @return string
- *
- */
-function path_shared_asset_url($path = ''){
-    $shared_link_path = PATH_SHARED_RESOURCE.'/assets';
-    return Url1::pathToUrl($shared_link_path) . ((empty($path) ? '' : '/' . trim($path, '/')));
-}
-
-/**
- * @param string $path
- * @return string
- *
- */
-function shared_asset($path = ''){ return (path_shared_asset_url($path)); }
 
 /**
  * Verify if url exists or use default

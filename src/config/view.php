@@ -19,8 +19,7 @@
      ************************************************/
     // your views file path, it's an array
     $view_path = [
-        BASE_PATH.'resources/views',    // app view
-        Config1::ENABLE_INCLUDES_SHARED?  PATH_SHARED_RESOURCE.'views' : null   // optional main view
+        PATH_RESOURCE.'views',    // app view
     ];
 
     $view_cachePath = BASE_PATH.'resources'.DS.'cache';     // compiled version
@@ -43,11 +42,11 @@
 //    // if your views file extension is not php or blade.php, use this to add it
 //    //$views->addExtension('tpl', 'blade');
 
-
-    use Jenssegers\Blade\Blade;
-    //    $blade = new Blade('views', 'assets/app_cache');
-    $bladeView = new Blade($view_path, $view_cachePath);
     //echo $blade->make('homepage', ['name' => 'John Doe'])->render();
+    use Jenssegers\Blade\Blade;
+    Global1::set('$bladeView', new Blade($view_path, $view_cachePath));
+
+
 
 
     /**
@@ -58,7 +57,8 @@
      * render the template file, stop the page and echo the view
      */
     function view($view_name, $param = [], $noPageAutoWrap = false){
-        global $bladeView;
+        $bladeView = Global1::get('$bladeView');
+
         $usePageWrap = !$noPageAutoWrap && Config1::AUTO_PAGE_WRAPPER;
         if($usePageWrap) { Page1::start(); }  // Page Wrapper Start
 
@@ -86,7 +86,7 @@
      * Could be use for sending e-mails, or rendering multiple view
      */
     function view_make($view_name, $param = []){
-        global $bladeView;
+        $bladeView = Global1::get('$bladeView');
         return $bladeView->make($view_name, $param)->render();
     }
 
@@ -110,7 +110,7 @@
      * @return bool
      */
     function view_exists($view_name){
-        global $bladeView;
+        $bladeView = Global1::get('$bladeView');
         return $bladeView->exists($view_name);
     }
 
@@ -146,7 +146,8 @@
             $fullPath = get_valid_view_path($full_view_path);
             return $fullPath? $fullPath: Console1::println("View Path [$full_view_path] Not Found in either AppView or SharedView", true);
         }
-        global $bladeView;  return $bladeView->getViewFullPath($full_view_path);
+        $bladeView = Global1::get('$bladeView');
+        return $bladeView->getViewFullPath($full_view_path);
     }
     /**
      * Get View full path
@@ -178,7 +179,10 @@
 
 
     // directory list
-    function resources_path($isShared = false){ return $isShared? PATH_SHARED_RESOURCE: PATH_RESOURCE; }
+    function resources_path($isShared = false){
+        return $isShared? PATH_SHARED_RESOURCE: PATH_RESOURCE;
+    }
+
     /**
      * Automatic lookup for view in either app view folder or shared view folder. return null if folder not exist
      * @param string $view_path (passed in view name. e.g layouts.bootstrap)

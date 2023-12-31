@@ -3,7 +3,6 @@
 
 /**
  * Load ENV base on the provided hostName in the config
- * @return array|null
  */
 function loadEnv(){
     $protocol = (empty($_SERVER['HTTPS']) ? 'http' : 'https') ;
@@ -12,6 +11,7 @@ function loadEnv(){
     $currentUrl = parse_url($currentFullUrl, PHP_URL_HOST);
     $urls = ["currentHost"=> "$protocol://$currentUrl"];
 
+    // Search for .env based on the environment
     foreach (Config1::ENVs as $env=>$hostList){
         foreach ($hostList as $host){
 
@@ -29,14 +29,16 @@ function loadEnv(){
             }
         }
     }
-    return $urls;
-}
 
-/**
- * Merge config1 with SERVER and ENV
- * @return array
- */
-function aggregateConfigWithWithServer(){
+    // Is Error Occurred?
+    $urls = json_encode($urls);
+    if($urls){
+        echo "<script> console.error('No .env found for this url', $urls) </script>";
+        $urls = str_replace("\/", "/", $urls);
+        die("<h1>Oops! No .env found for this url<br/><small>".$urls."</small> <p><small>Fix: Add the currentHost to the Config::ENVs[] var</small></p></h1>");
+    }
+
+    // Merge Config1 with $_SERVER and $_ENV
     $configs = (new ReflectionClass(Config1::class))->getConstants();
     $newEnv = array_merge($configs, $_ENV, $_SERVER);
     $_SERVER = $newEnv;
@@ -44,12 +46,4 @@ function aggregateConfigWithWithServer(){
     return $newEnv;
 }
 
-
-if($urls = loadEnv()){
-    $urls = json_encode($urls);
-    echo "<script> console.error('No .env found for this url', $urls) </script>";
-
-    $urls = str_replace("\/", "/", $urls);
-    die("<h1>Oops! No .env found for this url<br/><small>".$urls."</small> <p><small>Fix: Add the currentHost to the Config::ENVs[] var</small></p></h1>");
-}
-aggregateConfigWithWithServer();
+loadEnv();

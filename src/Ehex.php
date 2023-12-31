@@ -3017,7 +3017,14 @@ class Array1
 
     public static function exists($arrayList, $keyToSearch)
     {
-        if ($arrayList instanceof ArrayAccess) return $arrayList->offsetExists($keyToSearch);
+        if(!$arrayList){
+            return false;
+        }
+
+        if ($arrayList instanceof ArrayAccess) {
+            return $arrayList->offsetExists($keyToSearch);
+        }
+
         return array_key_exists($keyToSearch, $arrayList);
     }
 
@@ -3910,9 +3917,9 @@ class Console1
         return '';
     }
 
-    static function log($data, $title = "")
+    static function log($data, $title = "Ehex Info")
     {
-        echo "<script> console.log('-------$title------- exDebug(' + new Date().toLocaleTimeString() + ')--------------'); console.dir('" . String1::toString($data, ', ') . "'); </script>";
+        echo "<script> console.log('-[$title]-'); console.dir('" . String1::toString($data, ', ') . "'); </script>";
     }
 
     static function popupAny($obj)
@@ -4135,10 +4142,10 @@ class FileManager1
         $allFiles = array();
         foreach (Array1::toArray($pathList) as $path) {
             $handle = @opendir($path);
-            while ($file = @readdir($handle)) {
+            while ($handle && $file = readdir($handle)) {
                 $fullPath = rtrim($path, '/\\') . '/' . $file;
                 $ext = strtolower(self::getExtension($file));
-                if ($file != '.' && $file != '..') {
+                if (!in_array($file, ['.', '..'])) {
                     if (is_file($fullPath) && !in_array($ext, $ignoreExtension)) {
 
                         // filter extension
@@ -4157,7 +4164,7 @@ class FileManager1
                     }
                 }
             }
-            @closedir($handle);
+            $handle && @closedir($handle);
         }
         return $allFiles;
     }
@@ -4719,14 +4726,18 @@ class FileManager1
     private static function __autoClassRecursiveLoaderExecutor($class, $dir = null, $initPath = null)
     {
         if (is_null($dir)) $dir = $initPath;
-        foreach (scandir($dir) as $file) {
-            // directory?
-            if (is_dir($dir . $file) && substr($file, 0, 1) !== '.') self::__autoClassRecursiveLoaderExecutor($class, $dir . $file . '/');
-            // php file?
-            if (substr($file, 0, 2) !== '._' && preg_match("/.php$/i", $file)) {
-                // filename matches class?
-                if (str_replace('.php', '', $file) == $class || str_replace('.class.php', '', $file) == $class) include $dir . $file;
+        try{
+            foreach (scandir($dir) as $file) {
+                // directory?
+                if (is_dir($dir . $file) && substr($file, 0, 1) !== '.') self::__autoClassRecursiveLoaderExecutor($class, $dir . $file . '/');
+                // php file?
+                if (substr($file, 0, 2) !== '._' && preg_match("/.php$/i", $file)) {
+                    // filename matches class?
+                    if (str_replace('.php', '', $file) == $class || str_replace('.class.php', '', $file) == $class) include $dir . $file;
+                }
             }
+        }catch (Exception $err){
+            // Console1::log("Error reading directory [$dir] (".$err->getMessage().")");
         }
     }
 
@@ -7147,6 +7158,39 @@ class SessionPreferenceSave1
         // Sets the session name to the one set above.
         session_start();            // Start the PHP session
         //session_regenerate_id(true);    // regenerated the session, delete the old one.
+    }
+}
+
+/**
+ * Handles all the globals for the page.
+ */
+class Global1{
+    private static $vars = array();
+
+    // Sets the global one time.
+    public static function set($_name, $_value)
+    {
+        if(array_key_exists($_name, self::$vars))
+        {
+            throw new Exception('Global1::set("' . $_name . '") - Argument already exists and cannot be redefined!');
+        }
+        else
+        {
+            self::$vars[$_name] = $_value;
+        }
+    }
+
+    // Get the global to use.
+    public static function get($_name)
+    {
+        if(array_key_exists($_name, self::$vars))
+        {
+            return self::$vars[$_name];
+        }
+        else
+        {
+            throw new Exception('Global1::get("' . $_name . '") - Argument does not exist in globals!');
+        }
     }
 }
 

@@ -19,15 +19,16 @@ if(is_debug_mode()){
 }
 
 
-
 /************************************************
  *  Route Config
  ************************************************/
 require PATH_LIB_LIBRARY."route/route.php";
+
+
 exRoute1::initRouter();
+
+
 $route = exRoute1::instance();
-
-
 
 
 

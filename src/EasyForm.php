@@ -925,7 +925,7 @@ EOSTRING;
         $demoImage = ($demoImage) ? $demoImage : HtmlAsset1::getImageThumb(); //layout_asset('/image/thumb.png');
         $demoPreviewImage = $demoImage !== HtmlAsset1::getImageThumb() ? Url1::getFileImagePreview($demoImage, HtmlAsset1::getSuccessIcon()) : $demoImage; //layout_asset('/image/thumb.png');
         $fileUrl_filterOutDemoImage = (($demoImage !== HtmlAsset1::getImageThumb()) && ($demoImage !== HtmlAsset1::getImageAvatar())) ? $demoImage : null; //layout_asset('/image/thumb.png');
-        $defaultImageForNotImageFile = shared_asset('images/icons/success.png');
+        $defaultImageForNotImageFile = asset('default/images/icons/success.png');
 
         //dd($existingImagePath);
         $deleteButton = ($fileUrl_filterOutDemoImage && $existingImagePath && !String1::contains('/shared/', $existingImagePath)) ? "<button type='button' onclick='Popup1.confirmLink(`Delete File`, `Will you like to delete file and refresh page?`, `" . Form1::callController(exApiController1::class, "deleteFile()?_token=" . token() . "&file_path=" . urlencode($existingImagePath)) . "`)' class='btn btn-danger  file_action' style='font-weight:800;'><!-- display: none -->X</button>" : '';
@@ -1347,27 +1347,27 @@ class HtmlAsset1
 {
     static function getImageAvatar()
     {
-        return FileManager1::urlPathExistsOr(function_exists('shared_asset') ? shared_asset('images/icons/avatar.png') : '', "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAMAAABHPGVmAAAAtFBMVEUAAADMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMz////MzMz4+Pj8/Pzm5ubj4+P19fXX19fo6Oje3t7x8fHs7OzS0tLg4ODOzs7Z2dnu7u7Q0NDU1NT6+vrq6urb29sQYYLgAAAAJnRSTlMAFPzv4if03KZEI/ixmodrLfLIzZB1XDW/55VuZFUGAR3YrLRRA8h6NQkAAAQfSURBVGjetNXdUuJAEAXgCQkBlIBEVAoof25OT2aSCflH9/3fa4tdt9ZSOkwIfPfUoaebg7DlTDbLaThyfSLfHYXT5WbiiEu6mY+9ptKmjmUUAVEk49roqvHG8xtxEcPZKC8yiSNkVuSj2VD05MzDvZJoIdU+nDt9hghudYyTYn0bDM+NGA9MBCuRGYzPiXHWA4MOzGDd9dFetq5CR8rdvnS62VURo7O4WHW46MeFwlnU4lHYeQ7SHc60S4Nnq42HGj3o8FWcdOcp9KK8O3HCk/uBnj7cJ9Fq4mfoLfMnrXMwGR1li5ZZ7twMF5G57F5evQ/w3muVJnlZEpVNkqpd1LoXj7mx51CBlVX0TZnW4Knw+O8l0PwXy+mYRvHj6OBol6RgyIQ4TQZO+nikExc7ripKapFG3McWNz+6faW4bVC75J1by+p7828LHFfTKXsupdh+a0U3Zoam0xLmxWLXEV+tucfKyQJ3MmotvhgOwA1ihXuwwVD8NzbctZMV7pDN2GIQJGSlwOlRAgNGSVYSMEwgPjk+94OSZKcEI/L/HdiDBr/3fpuHfhB/vUkwMrIUgyHfPv8OE3AUWarBSZ7EwUyBo8mSAUfNxMFIgpOSJQWOHP3p+BysiixpsPJD488LsBKylIJVzA+VkoG1J0u/wMoO1eJJsHKyVIElPSGcBrySLCXgNY6YVOCRrRy8aiI2+toheiOWBqyIbDXgmaWY1pcIKcHbTcV9DJa8SEh833rBkqyh9Ybd6NohkSsWLSHvlwnxBeHaiwf9bsVedxMEgigAT0yrJRAlRU1pgrFedgRRvEvl/d+rTdrk/JFhGfZ7AM0uuzszh9i4uPEnI2BsV6envhK3Cx++U40/ih8eR7hLQSmNfISj3AhytnIw8mUMbkaS6YsvnhU8kPoNO6VGsh/jqa+R6zcLT713NbJCW3pRtFB+62zULSrKL85wnUpX3nGChZbIdv59GNnxDc1dvfSimBpgO0KbKqhUu4U2FQ23INNeRDTcNNwb2UE3mWB0wBCkLJDYBmEIwjinq11GtvnCYCorFSURgylGbFGlOFwYsREWiApF3UVYgNhDtFUEHog9xAAHroonGAEOlqK+Jwd5IXKoBmmpfVayz4Z4EArF4It40CrozHfcoNoIQacc2X7nt/22Ki9s4bQrssdhkzZEtgif0/yWna8la9x3xfb3z/63AOEzTIs8K3Z3dqCszo+0mNIT7+zUBwG89tih3is9lbBDCdWYsDMTqjVkR4YkGLMTYxINHa1DNuLORtTI87kT3yML85g7iOdkZb1gtcWabK36rNJfUQuzgBWCGbUTDrilQUjtJTG3ECekkwysV5GQXrj0uZG/DKmjaeSL/xBNyQlv8dLjJ3ovC49cCidBFPf9vx/3+3EUTEKy9APHsaFQQqfcJwAAAABJRU5ErkJggg==");
+        return asset('default/images/icons/avatar.png');
     }
 
     static function getImageThumb()
     {
-        return FileManager1::urlPathExistsOr(function_exists('shared_asset') ? shared_asset('images/icons/thumb.png') : '', "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAABsCAYAAABHCr0bAAAACXBIWXMAAAsSAAALEgHS3X78AAAEiUlEQVR4nO3cP0vzahiA8escIvSFCBbaoUOHDB0yuAguHRwcOvg1/Fr2Q9ghYIcKHTooOOjQIUOHCqlEaCCFFgycM0g97zl6tE3b5Gnu+xo1CQ/+ePKnfeIfV1dXf6GJ6s+8B6Bln6ILTNEFpugCU3SBKbrArO9+eXl5mdU4tB3Ubre//LnOdIEpusAUXWCKLjBFF5iiC0zRBaboAlN0gSm6wBRdYIouMEUXmKILTNEFpugCU3SBKbrAFF1gii6wbxdGavk0m83o9/ssFotvt3NdF9d11z6+ohvWbDaj0+kwn89X2jZNeno3qHXAN0nRDSkrcFB0I8oSHBQ997IGB0XPtTzAQe/ecyuKIjzPyxwcdKbnUp7gsAczPQgCfN/n9fWV6XQKQLlcplKp0Gg0qNVqOY9wvfIGB4PRF4sFg8GA0Wj06XfT6ZTpdIrv+ziOQ7PZpFQq5TDK9TIBHAxFH4/H9Ho9kiT5cdvRaMR4POb8/Jx6vZ7B6NJlCjgYeE0Pw3Bl8GVJktDr9QjDcIcjS59J4GAg+u3t7Vrgy5IkSb3vLjMNHAxDHw6HxHGcev84jhkOh1sc0WaZCA6Gofu+v/Exvrrxy6Moiri+vjYOHAxCXywWW7kmh2H44/fQu24JbtqlZplR6CYea91MBweDHtne3t6MPNY6hWGI53lGg4NBM/3Xr19GHmvV9gUcDEK3bRvL2vzEY1kWtm1vYUSrt0/gYBA6gOM4Wz/Grq/v+wYOhqGnWdn50zF2+Zn8PoKDYejVanUjeNd1qVarWxzR/7ev4GAYOkCz2Uz1dWmtVqPZbO5gRJ/bZ3AwEB2g1WrRaDRW3r5er9NqtXY4on/ad3Aw6Dn99yzL4uzsDMdxuL+//1g88d/K5TKnp6eZfaVaBHAwFH1ZvV6nXq8zm80IguDjj21ZFrVaLdNHs6KAg+Hoy2zbXut0v+2KBA6GXtNNaPlRbtHAQdG/7O3tjYODg0KCg6J/WZHBYU+u6VkXBAHdbreQ4KAz/VOTyaTQ4KDo/+rl5YWbm5tCg8MGp/dOp7PR8ibLsri4uMjss/KfmkwmIsAhx5meJAme5xFFUV5D+CgIAjHgkPPpPUkSut1urmvain7T9lW5X9PjOMbzvFzgJYKDAejw/kJip9NJ/d+S0iQVHAxBh/cZv+nN4aqNx2Ox4GAQOsB8PsfzvJ2+mrTOG7FFzSh0eL+5GwwG9Hq9rV/nn56exIODwR/DLt87Pzk5wXXdjZZHR1FEv9839lXmrDMWHd5n/d3dHQ8PDziOs/bCxzAMGQ6HW3kxskgZjb4sSRJ838f3fQ4PD3EcB9u2sW2bUqlEtVr9mMVRFBEEAc/Pz0a+MWpCe4H+e3Ec8/j4mPcw9jrjbuS03afoAlN0gSm6wBRdYIouMEUXmKILTNEFpugCU3SBKbrAFF1gii4wRReYogtM0QWm6AJLvVzKcRyOjo62ORZtzSqVSqr9UqMfHx+n3VXLOT29C0zRBaboAlN0gSm6wBRdYN8+srXb7azGoWWYznSBKbrAFF1gii4wRReYogvsb4sBa+dQCD+CAAAAAElFTkSuQmCC");
+        return asset('default/images/icons/thumb.png');
     }
 
     static function getSuccessIcon()
     {
-        return FileManager1::urlPathExistsOr(function_exists('shared_asset') ? shared_asset('images/icons/success.png') : '', static::getImageThumb());
+        return asset('default/images/icons/success.png');
     }
 
     static function getCloseIcon()
     {
-        return FileManager1::urlPathExistsOr(function_exists('shared_asset') ? shared_asset('images/icons/close.png') : '', static::getImageThumb());
+        return asset('default/images/icons/close.png');
     }
 
     static function getError404()
     {
-        return FileManager1::urlPathExistsOr(function_exists('shared_asset') ? shared_asset('images/error/error404.jpg') : '', static::getImageThumb());
+        return asset('default/images/error/error404.jpg');
     }
 }
 
