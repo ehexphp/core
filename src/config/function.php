@@ -140,11 +140,6 @@ function app_class_paths(){
 
         // include App Layout Dynamic Class Profile
         @FileManager1::getDirectoriesFolders([rtrim(PATH_LAYOUTS, DS), rtrim(PATH_PLUGINS, DS)], '', 'inc/'),
-        Config1::USE_SHARED_APP ?
-                array_merge(
-                    [PATH_SHARED_APP],
-                    FileManager1::getDirectoriesFolders([PATH_SHARED_RESOURCE.'views/layouts', PATH_SHARED_RESOURCE.'plugins'], '', 'inc/')
-                ): [] // include Main Layout Dynamic Class Profile
     );
     return ($all_path);
 }
