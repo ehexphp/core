@@ -1,9 +1,9 @@
-v1.0.4
+v1.0.5
 
 git add .
 git commit -m "new update"
 git push
 git push origin main -f
 
-git tag v1.0.4
-git push origin v1.0.4
+git tag v1.0.5
+git push origin v1.0.5

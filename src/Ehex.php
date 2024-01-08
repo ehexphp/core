@@ -6492,12 +6492,12 @@ class Url1
      * @param array $issuerIdentifier
      * @return string
      */
-    public static function generateJWToken($data = ['user_id' => 1], $expirersIn = "2days", $secret, $issuerIdentifier = ['typ' => 'JWT', 'alg' => 'HS256'])
+    public static function generateJWToken($data = ['user_id' => 1], $expirersIn = "2days", $secret = null, $issuerIdentifier = ['typ' => 'JWT', 'alg' => 'HS256'])
     {
         $base64UrlHeader = String1::base64_to_base64UrlSafe(base64_encode($header = json_encode($issuerIdentifier)));
         $base64UrlPayload = String1::base64_to_base64UrlSafe(base64_encode($payload = json_encode(array_merge(['iat' => time(), 'nbf' => time(), 'exp' => strtotime($expirersIn) < time() ? time() + strtotime($expirersIn) : strtotime($expirersIn)], $data))));
         $base64UrlSignature = String1::base64_to_base64UrlSafe(base64_encode(
-            hash_hmac('sha256', "$base64UrlHeader.$base64UrlPayload", $secret, true)
+            hash_hmac('sha256', "$base64UrlHeader.$base64UrlPayload", $secret ?? env('APP_KEY'), true)
         ));
         return $jwt = "$base64UrlHeader.$base64UrlPayload.$base64UrlSignature";
     }
@@ -6506,7 +6506,7 @@ class Url1
      * validate a jwt token
      * @return null|string
      */
-    public static function validateJWToken($token, $validateTime = true, $secret)
+    public static function validateJWToken($token, $validateTime = true, $secret = null)
     {
         if (!$token) return false;
         list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
@@ -6514,7 +6514,7 @@ class Url1
         $signature = base64_decode(String1::base64UrlSafe_to_base64($signatureEncoded));
         $payload = json_decode(base64_decode(String1::base64UrlSafe_to_base64($payloadEncoded)), true);
         if ($validateTime && ((isset($payload['exp']) && $payload['exp'] < time()) || (isset($payload['nbf']) && $payload['nbf'] > time()))) return false;
-        $rawSignature = hash_hmac('sha256', $dataEncoded, $secret, true);
+        $rawSignature = hash_hmac('sha256', $dataEncoded, $secret ?? env('APP_KEY'), true);
         return hash_equals($rawSignature, $signature) ? $payload : false;
     }
 
