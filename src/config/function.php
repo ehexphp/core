@@ -363,7 +363,7 @@ function encrypt_validate($original_data, $encrypted_data){
  * @param string $password
  * @return string
  */
-function encode_data($data, $password){ if (OPENSSL_VERSION_NUMBER <= 268443727) throw new RuntimeException('OpenSSL Version too old'); $iv_size  = openssl_cipher_iv_length('aes-256-cbc'); $iv = openssl_random_pseudo_bytes($iv_size);  $ciphertext     = openssl_encrypt($data, 'aes-256-cbc', $password, OPENSSL_RAW_DATA, $iv); $ciphertext_hex = bin2hex($ciphertext); $iv_hex         = bin2hex($iv); return "$iv_hex:$ciphertext_hex"; }
+function encode_data($data, $password = null){ if (OPENSSL_VERSION_NUMBER <= 268443727) throw new RuntimeException('OpenSSL Version too old'); $iv_size  = openssl_cipher_iv_length('aes-256-cbc'); $iv = openssl_random_pseudo_bytes($iv_size);  $ciphertext     = openssl_encrypt($data, 'aes-256-cbc', $password ?? env('APP_KEY'), OPENSSL_RAW_DATA, $iv); $ciphertext_hex = bin2hex($ciphertext); $iv_hex         = bin2hex($iv); return "$iv_hex:$ciphertext_hex"; }
 
 
 /**
@@ -374,7 +374,7 @@ function encode_data($data, $password){ if (OPENSSL_VERSION_NUMBER <= 268443727)
  * @param string $password
  * @return string
  */
-function decode_data($cipheredData, $password) { $parts = explode(':', $cipheredData); $iv = hex2bin($parts[0]);$ciphertext = hex2bin($parts[1]); return openssl_decrypt($ciphertext, 'aes-256-cbc', $password, OPENSSL_RAW_DATA, $iv); }
+function decode_data($cipheredData, $password = null) { $parts = explode(':', $cipheredData); $iv = hex2bin($parts[0]);$ciphertext = hex2bin($parts[1]); return openssl_decrypt($ciphertext, 'aes-256-cbc', $password ?? env('APP_KEY'), OPENSSL_RAW_DATA, $iv); }
 
 
 

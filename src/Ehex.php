@@ -5105,12 +5105,12 @@ class Form1
      */
     static function encode_data($data, $useEhexEncodeFunction = false)
     {
-        return $useEhexEncodeFunction ? encode_data($data, env('APP_KEY')) : self::base64url_encode($data);
+        return $useEhexEncodeFunction ? encode_data($data, null) : self::base64url_encode($data);
     }
 
     static function decode_data($data, $useEhexEncodeFunction = false)
     {
-        return $useEhexEncodeFunction ? decode_data($data, env('APP_KEY')) : self::base64url_decode($data);
+        return $useEhexEncodeFunction ? decode_data($data, null) : self::base64url_decode($data);
     }
 
 

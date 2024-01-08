@@ -323,6 +323,10 @@ class Db1
         static::tableDestroy(...Db1::getExistingModels());
     }
 
+    static function tableTruncateAll()
+    {
+        foreach (Db1::getExistingModels() as $model) $model::tableTruncate();
+    }
 
     /*
      * Delete all Database Table
