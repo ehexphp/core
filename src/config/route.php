@@ -35,21 +35,25 @@ $route = exRoute1::instance();
 /************************************************
  *  Route Init/Include
  ************************************************/
-$FORM_ACTION_SHOULD_REDIRECT = true;
+Global1::set('$FORM_ACTION_SHOULD_REDIRECT', true);
 
 /**
  * @param $route exRoute1
  */
 function api_and_form_default_route($route){
     $route->any('/form/$class', function ($class){
-        global $FORM_ACTION_SHOULD_REDIRECT;
+        $FORM_ACTION_SHOULD_REDIRECT = Global1::get('$FORM_ACTION_SHOULD_REDIRECT');
         Session1::set('old', $_REQUEST);
 
         // render function
         \ServerRequest1::callFunction(urldecode($class), ',', false);
 
-        if(!$FORM_ACTION_SHOULD_REDIRECT) return $FORM_ACTION_SHOULD_REDIRECT = true;
-        else return Url1::redirect(String1::isset_or($_REQUEST['redirect_to'], Url1::backUrl()));
+        if(!$FORM_ACTION_SHOULD_REDIRECT) {
+            Global1::set('$FORM_ACTION_SHOULD_REDIRECT', true);
+        }
+        else {
+            return Url1::redirect(String1::isset_or($_GET['redirect_to'], Url1::backUrl()));
+        }
     });
 
     $route->get('/api/$class', function (){

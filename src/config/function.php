@@ -510,10 +510,13 @@ function url($path = null) { return path_main_url() . '/' .ltrim($path, '/'); }
  */
 function redirect_to_view($viewPageName, array $param = [], $actionResult = false, $trueMessage = [], $falseMessage = []){
     // disable form/action/controller auto redirect
-    global $FORM_ACTION_SHOULD_REDIRECT;
-    $FORM_ACTION_SHOULD_REDIRECT = false;
+    Global1::set('$FORM_ACTION_SHOULD_REDIRECT', false);
+
     // set status
-    if(!empty($trueMessage) || !empty($trueMessage)) Session1::setStatusFrom(($actionResult)? $trueMessage: $falseMessage );
+    if(!empty($trueMessage)) {
+        Session1::setStatusFrom(($actionResult)? $trueMessage: $falseMessage );
+    }
+
     // set page rendering
     return view($viewPageName, $param);
 }

@@ -8,7 +8,7 @@ This software is distributed under the [MIT](https://opensource.org/license/mit/
 EhexCore is available on [Packagist](https://packagist.org/packages/ehexphp/core) (using semantic versioning), and installation via [Composer](https://getcomposer.org) is the recommended way to install EhexCore. Just add this line to your `composer.json` file:
 
 ```json
-"ehexphp/core": "^1.0.1"
+"ehexphp/core": "^1.0.4"
 ```
 
 or run
