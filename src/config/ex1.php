@@ -916,7 +916,7 @@ class exMail1
     static function mailerSendMailToList($toUserEmail_and_UserName_keyValue = [], $subject = '', $htmlMessageContent = '', $attachmentPath = null, $fromEmail = null, $fromUserName = null, $exception = false, $mailer_instance = null)
     {
         if(is_debug_mode()){
-            Session1::setStatus('Message Failed', "Couldn't send email because is_debug_mode() is enabled.", "error");
+            Session1::setStatus('Email Failed', "Couldn't send email because is_debug_mode() is enabled.", "error");
             return ResultStatus1::falseMessage("Failed. Couldn't send email because is_debug_mode() is enabled");
         }
         return mailer_send_mail_to_list($toUserEmail_and_UserName_keyValue, $subject, $htmlMessageContent, $attachmentPath, $fromEmail, $fromUserName, $exception, $mailer_instance);

@@ -10,6 +10,7 @@ function loadEnv(){
 
     $currentUrl = parse_url($currentFullUrl, PHP_URL_HOST);
     $urls = ["currentHost"=> "$protocol://$currentUrl"];
+    $isEnvFound = false;
 
     // Search for .env based on the environment
     foreach (Config1::ENVs as $env=>$hostList){
@@ -22,7 +23,8 @@ function loadEnv(){
                 try {
                     $dotenv = Dotenv\Dotenv::createImmutable(BASE_PATH, $env);
                     $dotenv->safeLoad();
-                    return null;
+                    $isEnvFound = true;
+                    break 2;
                 }catch (Exception $err){
                     die("<h1>Oops! Invalid character in your <code>$env</code> file </h1>");
                 }
@@ -30,9 +32,10 @@ function loadEnv(){
         }
     }
 
+
     // Is Error Occurred?
-    $urls = json_encode($urls);
-    if($urls){
+    if(!$isEnvFound){
+        $urls = json_encode($urls);
         echo "<script> console.error('No .env found for this url', $urls) </script>";
         $urls = str_replace("\/", "/", $urls);
         die("<h1>Oops! No .env found for this url<br/><small>".$urls."</small> <p><small>Fix: Add the currentHost to the Config::ENVs[] var</small></p></h1>");
