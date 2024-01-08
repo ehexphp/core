@@ -5105,12 +5105,12 @@ class Form1
      */
     static function encode_data($data, $useEhexEncodeFunction = false)
     {
-        return $useEhexEncodeFunction ? encode_data($data) : self::base64url_encode($data);
+        return $useEhexEncodeFunction ? encode_data($data, env('APP_KEY')) : self::base64url_encode($data);
     }
 
     static function decode_data($data, $useEhexEncodeFunction = false)
     {
-        return $useEhexEncodeFunction ? decode_data($data) : self::base64url_decode($data);
+        return $useEhexEncodeFunction ? decode_data($data, env('APP_KEY')) : self::base64url_decode($data);
     }
 
 
@@ -6492,7 +6492,7 @@ class Url1
      * @param array $issuerIdentifier
      * @return string
      */
-    public static function generateJWToken($data = ['user_id' => 1], $expirersIn = "2days", $secret = Config1::APP_KEY, $issuerIdentifier = ['typ' => 'JWT', 'alg' => 'HS256'])
+    public static function generateJWToken($data = ['user_id' => 1], $expirersIn = "2days", $secret, $issuerIdentifier = ['typ' => 'JWT', 'alg' => 'HS256'])
     {
         $base64UrlHeader = String1::base64_to_base64UrlSafe(base64_encode($header = json_encode($issuerIdentifier)));
         $base64UrlPayload = String1::base64_to_base64UrlSafe(base64_encode($payload = json_encode(array_merge(['iat' => time(), 'nbf' => time(), 'exp' => strtotime($expirersIn) < time() ? time() + strtotime($expirersIn) : strtotime($expirersIn)], $data))));
@@ -6506,7 +6506,7 @@ class Url1
      * validate a jwt token
      * @return null|string
      */
-    public static function validateJWToken($token, $validateTime = true, $secret = Config1::APP_KEY)
+    public static function validateJWToken($token, $validateTime = true, $secret)
     {
         if (!$token) return false;
         list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $token);
