@@ -1,6 +1,6 @@
 <?php
 
-include('xcrud.php');
+include_once('xcrud.php');
 header('Content-Type: text/html; charset=' . Xcrud_config::$mbencoding);
 
 // XAMTAX EDIT
@@ -14,5 +14,5 @@ header('Content-Type: text/html; charset=' . Xcrud_config::$mbencoding);
 
 //die(BASE_PATH."vendor/ehexphp/core/src/");
 
-include(BASE_PATH."vendor/ehexphp/core/src/".'Ehex.php');
+include_once(BASE_PATH."vendor/ehexphp/core/src/".'Ehex.php');
 echo Xcrud::get_requested_instance();
