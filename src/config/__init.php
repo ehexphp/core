@@ -40,7 +40,7 @@ if(version_compare(PHP_VERSION, '7.0.0', '<=')) die('<p>Ehex Requires (PHP VERSI
 
 //  Define Current Location
 const DS = DIRECTORY_SEPARATOR;
-define('BASE_PATH', dirname($_SERVER['SCRIPT_FILENAME']).DS);
+define('BASE_PATH', $_SERVER['DOCUMENT_ROOT'].DS);
 const PATH_EHEX_LIBRARY = BASE_PATH.'vendor'.DS.'ehexphp'.DS.'core'.DS.'src'.DS;
 
 // Define Real-Path Declaration... Changeable
@@ -61,7 +61,7 @@ const PATH_SHARED_RESOURCE = PATH_SHARED . 'resources' . DS;
 /************************************************
  *  Primary files. For Debugging and ENV
  ************************************************/
-//include BASE_PATH . 'vendor/autoload.php';
+include_once BASE_PATH.'.config.php';
 include PATH_EHEX_LIBRARY . 'config/env.php';
 
 
@@ -132,9 +132,6 @@ FileManager1::autoClassRecursiveLoad(
  ************************************************/
 include PATH_EHEX_LIBRARY . 'config/error.php';                // Error Handler
 include PATH_EHEX_LIBRARY . 'config/route.php';                // Route  / and Init Route like Login/ Register
-
-die("Work DONE...");
-
 
 
 

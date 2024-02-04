@@ -8758,6 +8758,7 @@ class Xcrud
                     $fld = $val;
                 }
                 if (!is_array($val)) {
+                    $val = String1::toString($val);
                     $value = str_ireplace('{' . $key . '}', $safety ? $this->html_safe($val) : $val, $value);
                     if ($tbl == $this->table)
                         $value = str_ireplace('{' . $fld . '}', $safety ? $this->html_safe($val) : $val, $value);
