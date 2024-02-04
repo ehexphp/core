@@ -1562,6 +1562,7 @@ class String1
      */
     static function replace($text, $search, $replace)
     {
+        $text = $text === null? "": $text;
         return str_replace($search, $replace, $text);
     }
 
