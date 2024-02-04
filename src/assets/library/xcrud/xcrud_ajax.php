@@ -12,7 +12,7 @@ header('Content-Type: text/html; charset=' . Xcrud_config::$mbencoding);
 @define("BASE_PATH", $_SERVER['DOCUMENT_ROOT']."/");
 @define("PATH_LIB_ASSETS", BASE_PATH."vendor/ehexphp/core/src/");
 
-die(PATH_LIB_ASSETS.'Ehex.php');
+//die(BASE_PATH."vendor/ehexphp/core/src/");
 
-include(PATH_LIB_ASSETS.'Ehex.php');
+include(BASE_PATH."vendor/ehexphp/core/src/".'Ehex.php');
 echo Xcrud::get_requested_instance();
