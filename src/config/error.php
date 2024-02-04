@@ -26,6 +26,9 @@ if(is_debug_mode()){
         foreach (app_class_list() as $class){
             $data[$class] = "typeof ".get_parent_class($class);
         }
+
+        $data["---------------"] = "--------------------------------------";
+        $data["Manage Database"] = Url1::getCurrentUrl(false)."?db_help";
         return $data;
     });
 
