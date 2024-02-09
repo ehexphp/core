@@ -743,12 +743,17 @@ class ServerRequest1
      */
     static function callFunction($lookupFunction = 'className::function(param1, param2)', $paramDelimiter = ',', $apiValidation = true)
     {
-        // replace :: to @ because :: failed me on form/user@process...
+        // It's just an ordinary route
+        if(strpos($lookupFunction, '(') <= 0) {
+            return ($lookupFunction);
+        }
+
+        // replace :: to @ because :: failed sometimes form/user@process...
         //String1::replace($lookupFunction, '::', '@');
 
         // validate API keys
         $breakSymbol = self::breakSymbol($lookupFunction);
-        $lookupFunction = static::validateAndNormalizeFunction($lookupFunction, $apiValidation);
+        $lookupFunction = static::validateAndNormalizeFunction($lookupFunction, $apiValidation, $breakSymbol);
         if ($lookupFunction instanceof ResultObject1) die($lookupFunction);
 
         // use regex to check if string contain ( , ' ) comma and single quote
@@ -757,7 +762,9 @@ class ServerRequest1
         //return str_getcsv($lookupFunction, $paramDelimiter, $isDoubleQuote );
 
         // is valid request
-        if (strpos($lookupFunction, '(') <= 0) return 'Not a valid CLF Request';
+        if (strpos($lookupFunction, '(') <= 0) {
+            return 'Not a valid CLF Request';
+        }
 
         // split up string
         $openB = strpos($lookupFunction, '(');
@@ -868,10 +875,8 @@ class ServerRequest1
      * @param bool $enableApiAuth . turn off if you want to use token only, or on for either token or api
      * @return ResultObject1|string
      */
-    private static function validateAndNormalizeFunction($functionName, $enableApiAuth = true)
+    private static function validateAndNormalizeFunction($functionName, $enableApiAuth = true, $breakSymbol = null)
     {
-        $breakSymbol = self::breakSymbol($functionName);
-
         // normalize url
         $functionName = (String1::contains($breakSymbol, $functionName) || static::class === self::class) ? $functionName : static::class . $breakSymbol . $functionName;
         if (!String1::contains('(', $functionName)) {
@@ -1649,13 +1654,6 @@ class String1
         return self::is_empty($delimiter) ? str_split($value) : explode($delimiter, $value);//preg_split('//i', $text)
     }
 
-
-    static function fetchSynonyms($word)
-    {
-        $api = "918b40fb4655e1ed5000c1910dc026a7";  // Get Api from http://bighugelabs.com;
-        $json = file_get_contents("http://words.bighugelabs.com/api/2/$api/$word/json");
-        return json_decode($json, true);
-    }
 
     /**
      * Translate Text
@@ -4984,7 +4982,7 @@ class Form1
      */
     static function callController($lookupClassNameOrClassFunction = 'className@function(param1, param2)', $processMethod = 'processSave()')
     {
-        return url('/form/' . self::toClassCallableLink($lookupClassNameOrClassFunction, $processMethod));
+        return url('/ehex-form/' . self::toClassCallableLink($lookupClassNameOrClassFunction, $processMethod));
     }
 
     /**
@@ -5008,7 +5006,7 @@ class Form1
      */
     static function callApi($lookupClassNameOrClassFunction = 'className::function(param1, param2)', $processMethod = 'processSave()')
     {
-        return url('/api/' . self::toClassCallableLink($lookupClassNameOrClassFunction, $processMethod));
+        return url('/ehex-api/' . self::toClassCallableLink($lookupClassNameOrClassFunction, $processMethod));
     }
 
 

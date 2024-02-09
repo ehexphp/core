@@ -1447,7 +1447,7 @@ Ajax1.requestGet = function(urlMethod, loadingContainerId, resultCallback){
     // load all user property
     $.ajax({
         type: 'get',
-        url: urlMethod.replace("/form/", "/api/"),
+        url: urlMethod.replace("/ehex-form/", "/ehex-api/"),
         dataType: "json",
         onOpen: loadingContainerId
     }).done(function (data) {
@@ -1477,7 +1477,7 @@ Ajax1.requestGet = function(urlMethod, loadingContainerId, resultCallback){
 Ajax1.request =  function(url, postEncodedData, successCallback, errorCallback,  cacheables, requestType) {
     $.ajax({
         type: (!requestType  && !postEncodedData?  'get' : 'post'),
-        url: url.replace("/form/", "/api/"),
+        url: url.replace("/ehex-form/", "/ehex-api/"),
         data : postEncodedData,
         dataType: "json",
         restful:true,
@@ -1508,7 +1508,7 @@ Ajax1.request =  function(url, postEncodedData, successCallback, errorCallback, 
 Ajax1.requestHtmlContent = function(url, toElementId, postData, cacheables, showLoading = true, errorCallback){
     if(showLoading) $("#" + toElementId).html("Loading...");
     $.ajax({
-        url: url.replace("/form/", "/api/"),
+        url: url.replace("/ehex-form/", "/ehex-api/"),
         cache: cacheables || true,
         dataType: "html",
         data : postData,
@@ -1524,7 +1524,7 @@ Ajax1.requestHtmlContent = function(url, toElementId, postData, cacheables, show
  * @param $elementId
  */
 Ajax1.loadElement = function(url, $elementId){
-    Ajax1.requestGet(url.replace("/form/", "/api/"), null, function(data){
+    Ajax1.requestGet(url.replace("/ehex-form/", "/ehex-api/"), null, function(data){
         document.getElementById($elementId).innerHTML = Object1.toCleanJsonString(data);
     });
 };

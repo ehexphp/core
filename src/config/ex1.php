@@ -738,7 +738,7 @@ class exRoute1
         }
 
         // API controller exception
-        $isAPIRequest = String1::startsWith($route, "/form/") || String1::startsWith($route, "/api/");
+        $isAPIRequest = String1::startsWith($route, "/ehex-form/") || String1::startsWith($route, "/ehex-api/");
         if($isAPIRequest){
             api_and_form_default_route(static::$instance);
             exit();
