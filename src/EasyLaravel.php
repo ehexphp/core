@@ -972,6 +972,27 @@ class Db2
         //    OR    return DB::connection()->getDoctrineColumn($tableName, $columnName)->getType()->getName();
     }
 
+    /**
+     * Create Table Using Laravel Capsule::Schema
+     * @param $tableName
+     * @param $columnName
+     * @return mixed
+     * @example
+     *     return DB2::createTable()->create('todos', function ($table) {
+     *          $table->increments('id');
+     *          $table->string('todo');
+     *          $table->string('description');
+     *          $table->string('category');
+     *          $table->integer('user_id')->unsigned();
+     *          $table->timestamps();
+     *          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+     *      });
+     */
+    static function createTable($tableName = 'users', $columnName = false)
+    {
+        return \Illuminate\Database\Capsule\Manager::schema();
+    }
+
 
 }
 
