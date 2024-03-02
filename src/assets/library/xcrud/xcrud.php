@@ -23,7 +23,7 @@ if (ini_set('magic_quotes_runtime', 0) /*get_magic_quotes_runtime()*/) {
 function Xcrud_instance()
 {
     $xcrud = Xcrud::get_instance();
-    $xcrud->connection(env('DB_USER'), env('DB_PASSWORD'), env('DB_NAME'), env('DB_HOST'), 'utf8');
+    $xcrud->connection(env('DB_USER'), env('DB_PASSWORD'), env('DB_NAME'), env('DB_HOST').":".env('DB_PORT', '3306'), 'utf8');
 
     $xcrud->email_from =  env('MAIL_EMAIL');
     $xcrud->email_from_name = env('APP_TITLE');

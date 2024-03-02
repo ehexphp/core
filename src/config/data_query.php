@@ -23,6 +23,7 @@ if(!empty(env('DB_NAME'))){
         $capsule->addConnection([
             "driver" => env('DB_DRIVER'),
             "host" => env('DB_HOST'),
+            "port" => env('DB_PORT', '3306'),
             "database" => env('DB_NAME'),
             "username" => env('DB_USER'),
             "password" => env('DB_PASSWORD')

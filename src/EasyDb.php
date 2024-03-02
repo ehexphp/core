@@ -120,7 +120,7 @@ class Db1
     static function isDatabaseExists()
     {
         try {
-            new mysqli(env('DB_HOST'), env('DB_USER'), env('DB_PASSWORD'),  env('DB_NAME'));
+            new mysqli(env('DB_HOST'), env('DB_USER'), env('DB_PASSWORD'),  env('DB_NAME'), env('DB_PORT', '3306'));
             return true;
         } catch (Exception $ex) {
             return null;

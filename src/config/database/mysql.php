@@ -13,7 +13,7 @@ class DbAdapter1{
      * @return mysqli
      */
     static function open($isDatabaseAvailable){
-       $da = @new mysqli(env('DB_HOST'), env('DB_USER'), env('DB_PASSWORD'), ($isDatabaseAvailable)? env('DB_NAME'):null);
+       $da = @new mysqli(env('DB_HOST'), env('DB_USER'), env('DB_PASSWORD'), ($isDatabaseAvailable)? env('DB_NAME'):null, env('DB_PORT', '3306'));
        if(!empty($da->connect_error)) die(Db1::errorHandlerAndSolution($da->connect_error));
        return $da;
     }
