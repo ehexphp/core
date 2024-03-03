@@ -4808,9 +4808,14 @@ class MySql1
             Db1::open();
             $DB_CONNECTION = Db1::$DB_HANDLER;
         }
-        $value = trim($value);
-        $value = !is_numeric($value)? mysqli_real_escape_string($DB_CONNECTION, $value): $value;
-        return $value;
+
+        try{
+            $value = trim($value);
+            $value = !is_numeric($value)? Db1::$DB_HANDLER->real_escape_string($value): $value;
+            return $value;
+        }catch (Exception $e){
+            return $value;
+        }
     }
 
 

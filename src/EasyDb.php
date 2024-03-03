@@ -88,8 +88,10 @@ class Db1
     static function open($isDatabaseAvailable = true)
     {
         try {
-            return static::$DB_HANDLER = DbAdapter1::open($isDatabaseAvailable);
+            static::$DB_HANDLER = DbAdapter1::open($isDatabaseAvailable);
+            return static::$DB_HANDLER;
         } catch (Exception $ex) {
+            static::$DB_HANDLER = null;
             Console1::println("<h3>Welcome to Ehex (ex).</h3> <p>App encounter error in Database</p><em>" . $ex->getMessage() . "</em>");
             Console1::println("<strong>NOTE</strong><br/><small>You can also change your app_key to <em style='font-weight: 800;color:gray'>APP_KEY = 'base64:" . password_hash(Math1::getUniqueId(), 1) . "'</em> if you have not, in .config file</small>");
             if (String1::contains('Unknown database', $ex->getMessage())) return null . die(Console1::println('<h2>Database [' . env('DB_NAME') . '] is not created yet.</h2><p>Open <em>.config.php</em> file and run <code>Db1::databaseCreate()</code> In Config1::onDebug() method. <br/><small>You can also run <em><a href="?db_help">Db1::help()</a></em> to manage model graphically.</small></p>' . exForm1::makeRunnableForm(Db1::class, 'databaseCreate()') . Session1::setStatus('Manage Model Graphically', 'to manage model, run Db1::help() in Config')));
@@ -952,7 +954,6 @@ abstract class Model1 extends Controller1
      */
     static function mysqlFilterValue($str)
     {
-        Db1::open();
         return DbAdapter1::escapeString($str, Db1::$DB_HANDLER);
     }
 
@@ -2080,15 +2081,16 @@ abstract class Model1 extends Controller1
         if (empty($filterArray)) return null;
         $whereQuery = Array1::mergeKeyValue($where_column_and_value, $operator, " $logic ", "%s", "'%s'");
         $tableData = static::toModelColumnValueArray();
-        $toDataTypeFormat = function ($key, $value) use ($tableData) {
-            return static::saveToDbAs(gettype($tableData[$key]), $value);
+        $cleanValue = function ($key, $value) use ($tableData) {
+            $value = static::saveToDbAs(gettype($tableData[$key]), $value);
+            return static::mysqlFilterValue($value);
         };
         $sqlQuery = 'UPDATE `' . static::getTableName() . '` SET ';
         $i = 0;
         $total = count($filterArray);
         foreach ($filterArray as $key => $value) {
             // add normal
-            $sqlQuery .= " `$key` = '" . static::mysqlFilterValue($toDataTypeFormat($key, $value)) . "' ";
+            $sqlQuery .= " `$key` = '" .  $cleanValue($key, $value). "' ";
             // close
             if ($i < $total - 1) $sqlQuery .= ', ';
             else $sqlQuery .= ($whereQuery) ? " WHERE $whereQuery " : '';

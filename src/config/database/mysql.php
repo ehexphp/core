@@ -14,7 +14,10 @@ class DbAdapter1{
      */
     static function open($isDatabaseAvailable){
        $da = @new mysqli(env('DB_HOST'), env('DB_USER'), env('DB_PASSWORD'), ($isDatabaseAvailable)? env('DB_NAME'):null, env('DB_PORT', '3306'));
-       if(!empty($da->connect_error)) die(Db1::errorHandlerAndSolution($da->connect_error));
+       if(!empty($da->connect_error)) {
+           die(Db1::errorHandlerAndSolution($da->connect_error));
+       }
+
        return $da;
     }
 
@@ -57,6 +60,7 @@ class DbAdapter1{
      * @return string
      */
     static function escapeString($value, $dbHandler){
+
         return MySql1::mysqli_real_escape($value, $dbHandler);
     }
 

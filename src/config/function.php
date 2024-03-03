@@ -532,10 +532,8 @@ function redirect_to_view($viewPageName, array $param = [], $actionResult = fals
  * @return string
  */
 function redirect($routeUrl = '/', $status = [], $param = []){
-    if(String1::startsWith($routeUrl, '/') || !String1::startsWith(strtolower($routeUrl), 'http')) {
-        $routeUrl = url($routeUrl);
-    }
-    return Url1::redirect($routeUrl, $status, $param);
+    if(String1::startsWith($routeUrl, '/') || !String1::startsWith(strtolower($routeUrl), 'http')) return Url1::redirect(url($routeUrl), $status, $param);
+    else return Url1::redirect($routeUrl, $status, $param);
 }
 
 /**
