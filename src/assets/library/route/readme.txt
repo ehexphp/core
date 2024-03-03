@@ -1,1 +1,0 @@
-https://phprouter.com/get-dynamic-routes

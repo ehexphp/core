@@ -1,6 +1,8 @@
 <?php
 
 
+
+
 /**
  * Created by PhpStorm.
  * Author: Samtax01
@@ -536,8 +538,13 @@ class exRoute1
 
     /**
      * @var [
-     *    'route'=> ['method'=>'post', 'action'=>null']
-     *]
+     *    'route'=> [
+     *          'method'=>'post',
+     *          'name'=>null,
+     *          'action'=>null,
+     *          'payload'=>[]
+     *    ]
+     * ]
      */
     static $routeInfo = [];
 
@@ -577,18 +584,11 @@ class exRoute1
                 die('<div style="text-align: center; padding:50px;"><h1>Site Under Maintenance</h1><p>We are sorry for the inconvenience. Please check back later</p></div>');
             });
         }
-
-        static::$instance = new PhpRoute();
     }
 
     static function instance(): exRoute1
     {
         return new static;
-    }
-
-    function onRoute($callback, $sharedVariable = [])
-    {
-        $callback();
     }
 
     /**
@@ -712,23 +712,41 @@ class exRoute1
      * e.g exRoute1::$routeInfo["/maintenance"]['action']
      * @param $actionOrPath
      */
-    static function performRouteAction($actionOrPath, $method, $payload = [])
+    static function performRouteAction($actionOrPath, $method, $payload = [], $requestPathParams = [])
     {
         // Is BladeView
         if($method === 'view'){
-            die(view($actionOrPath, $payload));
+            die(view($actionOrPath, array_merge($requestPathParams, $payload)));
         }
 
         if (is_callable($actionOrPath)) {
-            call_user_func_array($actionOrPath, []);
+            // Get only required path params, because we can't assign unset param for user
+            $ref = new ReflectionFunction($actionOrPath);
+            $neededPathParams = [];
+            foreach($ref->getParameters() as $parameter)
+            {
+                $name = $parameter->getName();
+                $neededPathParams[$name] = $requestPathParams[$name];
+            }
+            call_user_func_array($actionOrPath, $neededPathParams);
         } else {
+            foreach($requestPathParams as $var)
+            {
+                $$var = $var;
+            }
             include_once $actionOrPath;
         }
         exit();
     }
 
+    public function response($content, $status = 200, $headers = []){
+        $response = new \Symfony\Component\HttpFoundation\Response($content, $status, $headers);
+        $response->send();
+    }
+
     public function end()
     {
+
         $route = exUrl1::getRequestRoute();
 
         // Is maintenance mode
@@ -744,60 +762,45 @@ class exRoute1
             exit();
         }
 
+        $routes = new \Symfony\Component\Routing\RouteCollection();
+        $request =  Symfony\Component\HttpFoundation\Request::createFromGlobals();
+        $context = new Symfony\Component\Routing\RequestContext();
+        $context->fromRequest($request);
 
-        // Route not found
-        if(!array_key_exists($route, static::$routeInfo) && !$isAPIRequest){
+        foreach (static::$routeInfo as $_route => $_info) {
+            $_name = $_info['name'] ?? $_route;
+            $_payload = $_info['payload'];
+            $routes->add($_name, new \Symfony\Component\Routing\Route($_route, $_payload));
+        };
+
+
+        try {
+            $matcher = new Symfony\Component\Routing\Matcher\UrlMatcher($routes, $context);
+            $currentRoute = $matcher->match($route); // $currentRoute = $matcher->match($request->getPathInfo()); // Does not work with trailing slash in front
+            extract($currentRoute, EXTR_SKIP);
+
+            $name = $currentRoute["_route"];
+            $info = static::$routeInfo[$name];
+            $method = $info['method'];
+            $callbackAction = $info['action'];
+            $payload = $info['payload'];
+
+            // Blade View
+            if($method === 'view'){
+                static::performRouteAction($callbackAction, $method, $payload);
+            }
+
+            // Regular route
+            if($_SERVER['REQUEST_METHOD'] === strtoupper($method)){
+                static::performRouteAction($callbackAction, $method, $payload, $currentRoute);
+            }
+
+        } catch (Symfony\Component\Routing\Exception\ResourceNotFoundException $exception) {
             self::show404Page();
         }
-
-        $selectedRoute =  static::$routeInfo[$route];
-        $method = $selectedRoute['method'];
-        $callbackAction = $selectedRoute['action'];
-        $payload = $selectedRoute['payload'];
-
-        if($method === 'view'){
-            static::performRouteAction($callbackAction, $method, $payload);
-        }
-
-        // Regular route
-        static::$instance->$method($route, $callbackAction);
-
-        // View file not found
-        dd("View '$callbackAction' Not Found!");
-
-
-
-        // Execute routes
-//        foreach (static::$routeInfo as $route => $info) {
-//            d($route);
-//            $this->onRoute(function () use ($route, $info) {
-//                /**
-//                 * return static::$instance->get($route, $callbackAction);
-//                 */
-//                $method = $info['method'];
-//                $callbackAction = $info['action'];
-//
-//                // is maintenance mode
-//                if (Config1::MAINTENANCE_MODE && !is_debug_mode()) {
-//                    static::performRouteAction(exRoute1::$routeInfo["/maintenance"]['action']);
-//                }
-//
-//                // Render as Blade View
-//                if($method === 'view'){
-//                    return;
-//                   // die(view($route, $callbackAction));
-//                }
-//
-//                return static::$instance->$method($route, $callbackAction);
-//            }, $info['payload']);
-//        }
-
-        // Fallback and Error 404
-        //if (!static::$instance->hasRoute()) {
-
-        //}
-
     }
+
+
 
     /**
      * Show Error 404 Page

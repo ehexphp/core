@@ -20,19 +20,6 @@ if(is_debug_mode()){
 
 
 /************************************************
- *  Route Config
- ************************************************/
-require PATH_LIB_LIBRARY."route/route.php";
-
-
-exRoute1::initRouter();
-
-
-$route = exRoute1::instance();
-
-
-
-/************************************************
  *  Route Init/Include
  ************************************************/
 Global1::set('$FORM_ACTION_SHOULD_REDIRECT', true);
@@ -41,7 +28,7 @@ Global1::set('$FORM_ACTION_SHOULD_REDIRECT', true);
  * @param $route exRoute1
  */
 function api_and_form_default_route($route){
-    $route->any('/ehex-form/$class', function ($class){
+    $route->any('/ehex-form/{class}', function ($class){
         $FORM_ACTION_SHOULD_REDIRECT = Global1::get('$FORM_ACTION_SHOULD_REDIRECT');
         Session1::set('old', $_REQUEST);
 
@@ -56,9 +43,9 @@ function api_and_form_default_route($route){
         }
     });
 
-    $route->get('/ehex-api/$class', function (){
+    $route->get('/ehex-api/{class}', function (){
         // render result
-        echo json_encode(\Api1::callFunction(urldecode(Url1::getPageName()), ',', true));
+        die(json_encode(\Api1::callFunction(urldecode(Url1::getPageName()), ',', true)));
     });
 }
 
@@ -87,6 +74,9 @@ function make_default_route($onLoginFound_redirectTo = '/', $errorMessage = ['We
 }
 
 
+
+exRoute1::initRouter();
+$route = exRoute1::instance();
 $route->end();
 
 

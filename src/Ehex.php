@@ -1921,6 +1921,9 @@ class String1
      */
     static function getSomeText($text, $length = '20', $ellipsis = ' ...')
     {
+        if(String1::is_empty($text)){
+            return "";
+        }
         return (strlen($text) < $length) ? $text : self::getSubString($text, $length) . $ellipsis;
     }
 
