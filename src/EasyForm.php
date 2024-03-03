@@ -909,35 +909,35 @@ EOSTRING;
      * so as for feature_images[] would be feature_images_url[]
      * // HtmlWidget1::imageUploadBox('feature_image',  ($model->id > 0) ? $model->feature_image_url: null, 'height:150px;width:100% !important', '')
      * @param string $fileInputName
-     * @param null $demoImage
-     * @param string $image_style
+     * @param null $placeholderImageOrDefault
+     * @param string $imageStyle
      * @param string $labelName
      * @return string
      * @see HtmlWidget1::fileUploadBox()
      */
-    public static function imageUploadBox($fileInputName = 'feature_image', $demoImage = null, $image_style = 'height:150px;max-width:100%;', $labelName = 'Upload Image')
+    public static function imageUploadBox($fileInputName = 'feature_image', $placeholderImage= null, $imageStyle = 'height:150px;max-width:100%;', $labelName = 'Upload Image')
     {
-        // delete button
-        $existingImagePath = Url1::urlToPath($demoImage);
 
+        // delete button
+        $existingImagePath = Url1::urlToPath($placeholderImage);
 
         // init field
-        $demoImage = ($demoImage) ? $demoImage : HtmlAsset1::getImageThumb(); //layout_asset('/image/thumb.png');
-        $demoPreviewImage = $demoImage !== HtmlAsset1::getImageThumb() ? Url1::getFileImagePreview($demoImage, HtmlAsset1::getSuccessIcon()) : $demoImage; //layout_asset('/image/thumb.png');
-        $fileUrl_filterOutDemoImage = (($demoImage !== HtmlAsset1::getImageThumb()) && ($demoImage !== HtmlAsset1::getImageAvatar())) ? $demoImage : null; //layout_asset('/image/thumb.png');
+        $placeholderImageOrDefault = ($placeholderImage) ? $placeholderImage : HtmlAsset1::getImageThumb(); //layout_asset('/image/thumb.png');
+        $demoPreviewImage = $placeholderImageOrDefault !== HtmlAsset1::getImageThumb() ? Url1::getFileImagePreview($placeholderImageOrDefault, HtmlAsset1::getSuccessIcon()) : $placeholderImageOrDefault; //layout_asset('/image/thumb.png');
+        $fileUrl_filterOutDemoImage = (($placeholderImageOrDefault !== HtmlAsset1::getImageThumb()) && ($placeholderImageOrDefault !== HtmlAsset1::getImageAvatar())) ? $placeholderImageOrDefault : null; //layout_asset('/image/thumb.png');
         $defaultImageForNotImageFile = asset('default/images/icons/success.png');
 
         //dd($existingImagePath);
         $deleteButton = ($fileUrl_filterOutDemoImage && $existingImagePath && !String1::contains('/shared/', $existingImagePath)) ? "<button type='button' onclick='Popup1.confirmLink(`Delete File`, `Will you like to delete file and refresh page?`, `" . Form1::callController(exApiController1::class, "deleteFile()?_token=" . token() . "&file_path=" . urlencode($existingImagePath)) . "`)' class='btn btn-danger  file_action' style='font-weight:800;'><!-- display: none -->X</button>" : '';
         $fileUrlInputName = String1::endsWith('[]', trim($fileInputName)) ? String1::replaceEnd(trim($fileInputName), '[]', '') . '_url[]' : trim($fileInputName) . '_url';
         $labelName = !empty($labelName) ? '<div style="margin-top:3px;"><i class="fa fa-upload"></i> ' . $labelName . '</div>' : '';
-        $noHeightInStyle = String1::replace($image_style, 'height', 'hgt');
+        $noHeightInStyle = String1::replace($imageStyle, 'height', 'hgt');
 
 
         return <<< HTML
-            <label class="btn btn-default" style="border:1px dotted #aaa;border-radius: 20px; overflow: auto; $noHeightInStyle"> <!--  onmousemove="$(this).find('.file_action').show()" onmouseout="$(this).find('.file_action').hide()" -->
-                <input style="display: none; width:99%;" onchange="Picture1.uploadPreview(this, null, '$defaultImageForNotImageFile')" type="file" name="$fileInputName" />
-                <img style="$image_style"  src="$demoPreviewImage" id="$demoImage" />
+            <label class="btn btn-default btn-sm" style="border:1px dotted #aaa;border-radius: 20px; overflow: auto; $noHeightInStyle"> <!--  onmousemove="$(this).find('.file_action').show()" onmouseout="$(this).find('.file_action').hide()" -->
+                <input style="display: none; width:99%;" onchange="Picture1.uploadPreview(this, null, '$defaultImageForNotImageFile')" type="file" name="$fileInputName" value="" />
+                <img style="$imageStyle"  src="$demoPreviewImage" id="$placeholderImageOrDefault" />
                 <div> <div class="input-group"><input name="$fileUrlInputName" class="form-control field_url" placeholder="or paste file url" value="$fileUrl_filterOutDemoImage" />$deleteButton</div> $labelName </div>
             </label>
 HTML;
