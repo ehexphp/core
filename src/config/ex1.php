@@ -791,7 +791,7 @@ class exRoute1
             }
 
             // Regular route
-            if($_SERVER['REQUEST_METHOD'] === strtoupper($method)){
+            if($method === 'any' || $_SERVER['REQUEST_METHOD'] === strtoupper($method)){
                 static::performRouteAction($callbackAction, $method, $payload, $currentRoute);
             }
 
