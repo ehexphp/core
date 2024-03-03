@@ -84,7 +84,7 @@ function pre($arr,$them=1){
  * @param mixed ...$logArr
  */
 function dd(...$logArr){
-    echo "<script> dd(".Array1::toJSON($logArr).") </script>";
+    echo "<script> console.log('[DEBUG]', ...".Array1::toJSON($logArr).") </script>";
     Page1::$FLAG_SHOW_LOAD_TIME = true;
     Page1::start();
     foreach ($logArr as $data) {
@@ -99,6 +99,7 @@ function dd(...$logArr){
  * @param mixed ...$logArr
  */
 function d(...$logArr){
+    echo "<script> console.log('[DEBUG]', ...".Array1::toJSON($logArr).") </script>";
     foreach ($logArr as $data) Util1::var_dump($data);
 }
 
@@ -531,8 +532,10 @@ function redirect_to_view($viewPageName, array $param = [], $actionResult = fals
  * @return string
  */
 function redirect($routeUrl = '/', $status = [], $param = []){
-    if(String1::startsWith($routeUrl, '/') || !String1::startsWith(strtolower($routeUrl), 'http')) return Url1::redirect(url($routeUrl), $status, $param);
-    else return Url1::redirect($routeUrl, $status, $param);
+    if(String1::startsWith($routeUrl, '/') || !String1::startsWith(strtolower($routeUrl), 'http')) {
+        $routeUrl = url($routeUrl);
+    }
+    return Url1::redirect($routeUrl, $status, $param);
 }
 
 /**

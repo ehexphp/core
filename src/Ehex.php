@@ -2246,6 +2246,9 @@ class Array1
      */
     static function stringArrayToArray($stringArrayValue = "['hello', 'world']", callable $optionalCallBackForItem = null)
     {
+        if(empty($stringArrayValue)){
+            return [];
+        }
         $category_list = [];
         $cat = explode(',', $stringArrayValue);
         foreach ($cat as $index => $item) {
@@ -2919,7 +2922,7 @@ class Array1
      */
     static function splitAndFilterArrayItem($delimiter, $string)
     {
-        $string = trim($string, $delimiter);
+        $string = trim(String1::toString($string), $delimiter);
         return self::filterArrayItem(explode($delimiter, $string));
     }
 
@@ -4793,17 +4796,20 @@ class MySql1
      */
     static function mysqli_real_escape($value, $DB_CONNECTION = null)
     {
-        if (!$DB_CONNECTION && Framework1::Ehex()) {
+        $type = gettype($value);
+        if($type === 'array') {
+            return null;
+        }
+        if($type !== 'string') {
+            return $value;
+        }
+
+        if (!$DB_CONNECTION) {
             Db1::open();
             $DB_CONNECTION = Db1::$DB_HANDLER;
         }
-        $value = @trim($value);
-        // Stripslashes
-        if (phpversion() < "5.3") {
-            if (get_magic_quotes_gpc()) $value = stripslashes($value);
-        }
-        // Quote if not integer
-        if (!is_numeric($value)) $value = mysqli_real_escape_string($DB_CONNECTION, $value);
+        $value = trim($value);
+        $value = !is_numeric($value)? mysqli_real_escape_string($DB_CONNECTION, $value): $value;
         return $value;
     }
 
@@ -7170,9 +7176,9 @@ class Global1{
     private static $vars = array();
 
     // Sets the global one time.
-    public static function set($_name, $_value)
+    public static function set($_name, $_value, $definedOnce = true)
     {
-        if(array_key_exists($_name, self::$vars))
+        if($definedOnce && array_key_exists($_name, self::$vars))
         {
             throw new Exception('Global1::set("' . $_name . '") - Argument already exists and cannot be redefined!');
         }

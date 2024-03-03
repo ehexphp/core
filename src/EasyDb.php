@@ -1675,6 +1675,8 @@ abstract class Model1 extends Controller1
      */
     static function insert($column_and_value = [], $uniqueColumnKey = [], $uniqueColumnLogic = 'OR', $replaceOldEqualRow = false)
     {
+        $column_and_value = Object1::toArray($column_and_value);
+        
         // normal value if is [0=>[data]]
         if (@is_int(@array_keys($column_and_value)[0])) return static::insertMany(...$column_and_value); // $column_and_value = [0];
 

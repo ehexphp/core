@@ -570,6 +570,7 @@ class exRoute1
         static::$routeNames['current'] = path_current_url();
 
         Config1::onRoute(static::instance());
+        api_and_form_default_route(static::instance());
 
         // Default Error 404 handler
         if (!array_key_exists('error404', static::$routeNames)) {
@@ -588,7 +589,11 @@ class exRoute1
 
     static function instance(): exRoute1
     {
-        return new static;
+        if(static::$instance === null){
+            static::$instance =  new static;
+        }
+
+        return static::$instance;
     }
 
     /**
@@ -756,11 +761,11 @@ class exRoute1
         }
 
         // API controller exception
-        $isAPIRequest = String1::startsWith($route, "/ehex-form/") || String1::startsWith($route, "/ehex-api/");
-        if($isAPIRequest){
-            api_and_form_default_route(static::$instance);
-            exit();
-        }
+//        $isAPIRequest = String1::startsWith($route, "/ehex-form/") || String1::startsWith($route, "/ehex-api/");
+//        if($isAPIRequest){
+//
+//            exit();
+//        }
 
         $routes = new \Symfony\Component\Routing\RouteCollection();
         $request =  Symfony\Component\HttpFoundation\Request::createFromGlobals();

@@ -19,6 +19,9 @@ if(is_debug_mode()){
 }
 
 
+
+
+
 /************************************************
  *  Route Init/Include
  ************************************************/
@@ -43,7 +46,7 @@ function api_and_form_default_route($route){
         }
     });
 
-    $route->get('/ehex-api/{class}', function (){
+    $route->any('/ehex-api/{class}', function (){
         // render result
         die(json_encode(\Api1::callFunction(urldecode(Url1::getPageName()), ',', true)));
     });
@@ -72,7 +75,6 @@ function make_default_route($onLoginFound_redirectTo = '/', $errorMessage = ['We
     exRoute1::instance()->any('/logout',          function() { return User::logout(); });
     exRoute1::instance()->get('/delete_account',  function() { (User::getLogin(false))->delete(); });
 }
-
 
 
 exRoute1::initRouter();
