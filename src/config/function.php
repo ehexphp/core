@@ -128,6 +128,8 @@ function app($c = null) {
 
 function auth(){ return Auth1::class; }
 
+function base_path(){ return rtrim(BASE_PATH, '/'); }
+
 
 /**
  * app full class path list
