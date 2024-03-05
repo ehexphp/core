@@ -1972,7 +1972,7 @@ abstract class Model1 extends Controller1
      *  This Verify the input "$column_and_value" with models column dat exists,
      *  and  $column_and_value that does not exists in Model
      */
-    static function getSafeParamOnly($column_and_value = [])
+    static function getSafeParamOnly($column_and_value = [], $filter = true, $removePrimaryId = true)
     {
 
         // note down ignore
@@ -1980,15 +1980,15 @@ abstract class Model1 extends Controller1
         foreach (static::$COLUMN_NO_FILTER_LIST as $ignoreColumn) if (isset($column_and_value[$ignoreColumn])) $noFilteredColumn[$ignoreColumn] = $column_and_value[$ignoreColumn];
 
         // filter out bad and needed row
-        $filterArray = Array1::getCommonField(function ($data) {
-            return (static::$FLAG_COLUMN_NO_FILTER) ? $data : static::mysqlFilterValue($data);
+        $filterArray = Array1::getCommonField(function ($data) use ($filter){
+            return (static::$FLAG_COLUMN_NO_FILTER || !$filter) ? $data : static::mysqlFilterValue($data);
         }, $column_and_value, Array1::initEmptyValueTo(static::toModelColumnValueArray(), ''));
         $filterArray = Array1::merge($filterArray, $noFilteredColumn);
 
         //dd($filterArray, $filterArray);
 
         // remove id
-        if (isset($filterArray[static::$PRIMARY_KEY_NAME])) unset($filterArray[static::$PRIMARY_KEY_NAME]);
+        if ($removePrimaryId && isset($filterArray[static::$PRIMARY_KEY_NAME])) unset($filterArray[static::$PRIMARY_KEY_NAME]);
 
         // update update_at
         if (isset(static::getFixColumn()['updated_at'])) $filterArray['updated_at'] = date(static::$SQL_TIMESTAMP_FORMAT);
