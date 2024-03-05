@@ -591,7 +591,7 @@ EOSTRING;
         }
 
         $value = (is_array($value) || $value instanceof ArrayAccess) ? (isset($value[$name_orNameValueList]) ? $value[$name_orNameValueList] : '') : $value;
-        return self::outputAs("<input type='hidden' name='$name_orNameValueList' id='$name_orNameValueList' value='$value' />");
+        return self::outputAs("<input value='$value' type='hidden' id='$name_orNameValueList' name='$name_orNameValueList' />");
     }
 
 
