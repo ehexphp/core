@@ -751,21 +751,13 @@ class exRoute1
 
     public function end()
     {
-
-        $route = exUrl1::getRequestRoute();
+        // $route = exUrl1::getRequestRoute();
 
         // Is maintenance mode
         if (env('MAINTENANCE_MODE') && !is_debug_mode()) {
             $err404 = exRoute1::$routeInfo["/maintenance"];
             static::performRouteAction($err404['action'], $err404['method']);
         }
-
-        // API controller exception
-//        $isAPIRequest = String1::startsWith($route, "/ehex-form/") || String1::startsWith($route, "/ehex-api/");
-//        if($isAPIRequest){
-//
-//            exit();
-//        }
 
         $routes = new \Symfony\Component\Routing\RouteCollection();
         $request =  Symfony\Component\HttpFoundation\Request::createFromGlobals();
@@ -781,7 +773,8 @@ class exRoute1
 
         try {
             $matcher = new Symfony\Component\Routing\Matcher\UrlMatcher($routes, $context);
-            $currentRoute = $matcher->match($route); // $currentRoute = $matcher->match($request->getPathInfo()); // Does not work with trailing slash in front
+            // $currentRoute = $matcher->match($route);
+            $currentRoute = $matcher->match(rtrim($request->getPathInfo() , '/'));
             extract($currentRoute, EXTR_SKIP);
 
             $name = $currentRoute["_route"];
