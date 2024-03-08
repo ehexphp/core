@@ -17,7 +17,7 @@ class FileSession1
         $this->path = $path;
         $this->database = $path . md5($database_name) . '.json';
         $this->d_settings = $path . 'd_settings.json';
-        $this->dev_mode = true;
+        $this->dev_mode = $dev_mode;
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }

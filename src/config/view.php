@@ -23,6 +23,7 @@
     ];
 
     $view_cachePath = BASE_PATH.'resources'.DS.'cache';     // compiled version
+    FileManager1::createDirectory($view_cachePath);
 
 //    $view_file = new Filesystem;
 //    $view_compiler = new BladeCompiler($view_file, $view_cachePath);
@@ -44,7 +45,7 @@
 
     //echo $blade->make('homepage', ['name' => 'John Doe'])->render();
 
-    FileManager1::createDirectory($view_cachePath);
+
     use Jenssegers\Blade\Blade;
     Global1::set('$bladeView', new Blade($view_path, $view_cachePath));
 

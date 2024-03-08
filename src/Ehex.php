@@ -4641,7 +4641,7 @@ class FileManager1
 
     static function createDirectory($path = '\\')
     {
-        return @mkdir($path, 0777, true);
+        return is_dir($path) || mkdir($path, 0777, true);
     }
 
     /**
@@ -7183,20 +7183,21 @@ class Global1{
     // Sets the global one time.
     public static function set($_name, $_value, $definedOnce = true)
     {
-        if($definedOnce && array_key_exists($_name, self::$vars))
+        if($definedOnce && self::has($_name))
         {
             throw new Exception('Global1::set("' . $_name . '") - Argument already exists and cannot be redefined!');
         }
         else
         {
             self::$vars[$_name] = $_value;
+            return $_value;
         }
     }
 
     // Get the global to use.
     public static function get($_name)
     {
-        if(array_key_exists($_name, self::$vars))
+        if(self::has($_name))
         {
             return self::$vars[$_name];
         }
@@ -7204,6 +7205,12 @@ class Global1{
         {
             throw new Exception('Global1::get("' . $_name . '") - Argument does not exist in globals!');
         }
+    }
+
+    // Get the global to use.
+    public static function has($_name)
+    {
+        return array_key_exists($_name, self::$vars);
     }
 }
 

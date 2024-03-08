@@ -15,7 +15,6 @@
 
 
     require_once(PATH_LIB_LIBRARY . 'filesession/FileSession1.php');
-    Global1::set('$__FILE_SESSION', new FileSession1('default', resources_path_cache().'/file_session/', is_debug_mode()));
 
     /**
      * Custom Define
@@ -51,7 +50,10 @@
      */
     function file_session($fileName = null){
         if($fileName) return new FileSession1($fileName, resources_path_cache().'/file_session/', is_debug_mode());
-        return Global1::get('$__FILE_SESSION');
+
+        return Global1::has('$__FILE_SESSION')?
+            Global1::get('$__FILE_SESSION'):
+            Global1::set('$__FILE_SESSION', new FileSession1('default', resources_path_cache().'/file_session/', is_debug_mode()));
     }
 
     // OR
