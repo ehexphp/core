@@ -48,6 +48,7 @@
 @ini_set("session.cookie_lifetime", 360000);
 //session_set_cookie_params(3600); // each client should remember their session id for EXACTLY 1 hour
 //setcookie('PHPSESSID', session_id(),60*60*24);
+umask(0077);
 @session_start();
 
 
@@ -6076,7 +6077,7 @@ class Url1
         $path = static::normalizePath($path);
         $fileSystemRelativePath = String1::replace($path, $redundantPath ? $redundantPath : $_SERVER['DOCUMENT_ROOT'], '');
         //$fileSystemRelativePath = '/'.FileManager1::relativePath($_SERVER['DOCUMENT_ROOT'], $path);
-        return Url1::prependHttp($_SERVER['HTTP_HOST']) . $fileSystemRelativePath;
+        return Url1::prependHttp($fileSystemRelativePath);
     }
 
     static function urlToPath($url)
