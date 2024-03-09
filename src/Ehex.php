@@ -6132,18 +6132,15 @@ class Url1
 
     static function getDomainName($server = null, $use_forwarded_host = false)
     {
-
         $server = $server ? $server : $_SERVER;
-        $ssl = isset($server['HTTPS']) && $server['HTTPS'] == 'on';
+        $ssl = (isset($server['HTTPS']) && $server['HTTPS'] == 'on') ||
+            (isset($server['HTTP_X_FORWARDED_PROTO']) && $server['HTTP_X_FORWARDED_PROTO'] == 'https');
         $sp = strtolower($server['SERVER_PROTOCOL']);
         $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
         $port = $server['SERVER_PORT'];
         $port = ((!$ssl && $port == '80') || ($ssl && $port == '443')) ? '' : ':' . $port;
         $host = ($use_forwarded_host && isset($server['HTTP_X_FORWARDED_HOST'])) ? $server['HTTP_X_FORWARDED_HOST'] : (isset($server['HTTP_HOST']) ? $server['HTTP_HOST'] : null);
         $host = isset($host) ? $host : $server['SERVER_NAME'] . $port;
-
-        $protocol = "https";
-
         return  "$protocol://$host";
     }
 
