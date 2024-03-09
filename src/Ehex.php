@@ -6132,6 +6132,7 @@ class Url1
 
     static function getDomainName($server = null, $use_forwarded_host = false)
     {
+
         $server = $server ? $server : $_SERVER;
         $ssl = isset($server['HTTPS']) && $server['HTTPS'] == 'on';
         $sp = strtolower($server['SERVER_PROTOCOL']);
@@ -6142,6 +6143,7 @@ class Url1
         $host = isset($host) ? $host : $server['SERVER_NAME'] . $port;
 
         $protocol = "https";
+
         return  "$protocol://$host";
     }
 
