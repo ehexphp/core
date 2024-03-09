@@ -582,7 +582,8 @@ function layout_asset($file_path_name = '', $assets_folder_name = 'assets', $lay
     $path = $path.DS.$assets_folder_name.(!empty($file_path_name)? DS.$file_path_name: '');
     // if shared_assets, create symlink to assets and put under website. (otherwise move __include folder to your website) because assets file must be a subdirectory under website domain and not outside website folder wic we don't knw url location for.
     $path = normalizeSharedPath($path, '/shared/resources/views/', 'layout_list');
-    return Url1::pathToUrl($path);
+    // return Url1::pathToUrl($path);
+    return $path;
 }
 
 /**
