@@ -6,5 +6,5 @@ git push
 git push origin main -f
 
 git push
-git tag v1.0.38
-git push origin v1.0.38
+git tag v1.0.39
+git push origin v1.0.39

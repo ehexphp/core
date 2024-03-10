@@ -1,16 +1,6 @@
 <?php
 
 
-
-
-
-/** Database driver; f0ska xCRUD v.1.6.26; 03/2015 */
-function xcrud_get_db_connection()
-{
-    //return array(Config1::DB_USER, Config1::DB_PASSWORD, Config1::DB_NAME, Config1::DB_HOST, 'utf8');
-}
-
-
 class Xcrud_db
 {
     private static $_instance = array();

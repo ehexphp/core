@@ -6120,21 +6120,21 @@ class Url1
 
     static function prependHttp($url)
     {
-        $http = isset($_SERVER['HTTPS']) ? "https://" : "http://";
+        $http = self::isHttps() ? "https://" : "http://";
         return (String1::contains('http', strtolower($url)) ? $url : $http . $url);
     }
 
 
     static function isHttps()
     {
-        return isset($_SERVER['HTTPS']);
+        return (isset($server['HTTPS']) && $server['HTTPS'] == 'on') ||
+            (isset($server['HTTP_X_FORWARDED_PROTO']) && $server['HTTP_X_FORWARDED_PROTO'] == 'https');
     }
 
     static function getDomainName($server = null, $use_forwarded_host = false)
     {
         $server = $server ? $server : $_SERVER;
-        $ssl = (isset($server['HTTPS']) && $server['HTTPS'] == 'on') ||
-            (isset($server['HTTP_X_FORWARDED_PROTO']) && $server['HTTP_X_FORWARDED_PROTO'] == 'https');
+        $ssl = self::isHttps();
         $sp = strtolower($server['SERVER_PROTOCOL']);
         $protocol = substr($sp, 0, strpos($sp, '/')) . (($ssl) ? 's' : '');
         $port = $server['SERVER_PORT'];
@@ -6230,7 +6230,8 @@ class Url1
      */
     static function backUrl()
     {
-        $url = String1::isset_or($_SERVER['HTTP_REFERER'], (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+        $scheme = Url1::isHttps()?  "https://" : "http://";
+        $url = String1::isset_or($_SERVER['HTTP_REFERER'], ("$scheme$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"));
         return (empty($url) || ($url === Url1::getCurrentUrl())) ? Url1::getDomainName() : $url;  // return htmlspecialchars( $url, ENT_QUOTES, 'UTF-8' );
     }
 
