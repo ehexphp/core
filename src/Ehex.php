@@ -50,7 +50,6 @@
 //setcookie('PHPSESSID', session_id(),60*60*24);
 @session_start();
 
-
 /**
  * header('Access-Control-Allow-Origin: *');
  * header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
@@ -6046,6 +6045,11 @@ class Url1
         return self::pathToUrl($fullDirectoryPath) . DIRECTORY_SEPARATOR . $path;
     }
 
+    /**
+     * Clean Path from /../ or double slash ///
+     * @param $path
+     * @return string
+     */
     static function normalizePath($path)
     {
         $parts = array();// Array to build a new path from the good parts

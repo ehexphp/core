@@ -10,6 +10,13 @@
 global $__ENV;
 $__ENV = $_SERVER; //Class1::getClassStaticVariables(Config1::class);
 
+/**
+ * Forcefully ensure $_SERVER['HTTPS'] https://github.com/dmikusa/cf-php-apache-buildpack/issues/6
+ */
+if(!isset($_SERVER['HTTPS']) && isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
+    $_SERVER['HTTPS']='on';
+}
+
 
 /**
  * When trying to get config property, The config($key) first check the $__ENV global variable,
