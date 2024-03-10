@@ -5,7 +5,12 @@
  * Load ENV base on the provided hostName in the config
  */
 function loadEnv(){
-    $protocol = Url1::isHttps() ? 'https': 'http' ;
+
+    $isForceHTTPS = function(){
+        return (isset($server['HTTPS']) && $server['HTTPS'] == 'on') ||
+            (isset($server['HTTP_X_FORWARDED_PROTO']) && $server['HTTP_X_FORWARDED_PROTO'] == 'https');
+    };
+    $protocol = $isForceHTTPS ? 'https': 'http' ;
     $currentFullUrl = "$protocol://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
     $currentUrl = parse_url($currentFullUrl, PHP_URL_HOST);
