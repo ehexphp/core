@@ -6077,7 +6077,7 @@ class Url1
         $fileSystemRelativePath = String1::replace($path, $redundantPath ? $redundantPath : $_SERVER['DOCUMENT_ROOT'], '');
         //$fileSystemRelativePath = '/'.FileManager1::relativePath($_SERVER['DOCUMENT_ROOT'], $path);
         // return Url1::prependHttp($fileSystemRelativePath);
-        return $addHttp? self::getDomainName().$fileSystemRelativePath: $fileSystemRelativePath;
+        return $addHostName? self::getDomainName().$fileSystemRelativePath: $fileSystemRelativePath;
     }
 
     static function urlToPath($url)
