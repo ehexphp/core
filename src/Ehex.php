@@ -6132,8 +6132,8 @@ class Url1
 
     static function isHttps()
     {
-        return (isset($server['HTTPS']) && $server['HTTPS'] == 'on') ||
-            (isset($server['HTTP_X_FORWARDED_PROTO']) && $server['HTTP_X_FORWARDED_PROTO'] == 'https');
+        return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ||
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https');
     }
 
     static function getDomainName($server = null, $use_forwarded_host = false)
