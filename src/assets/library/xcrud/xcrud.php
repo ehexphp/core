@@ -7937,7 +7937,12 @@ class Xcrud
         $url = rtrim($url, '/');
         $host = trim($_SERVER['HTTP_HOST'], '/');
         $scheme = (!isset($_SERVER['HTTPS']) or !$_SERVER['HTTPS'] or strtolower($_SERVER['HTTPS']) == 'off' or strtolower($_SERVER['HTTPS']) == 'no') ? 'http://' : 'https://';
-        $scheme = $scheme === "http://" && Url1::isHttps()?  "https://" : "http://";
+
+        $isForceHTTP = function(){
+            return (isset($server['HTTPS']) && $server['HTTPS'] == 'on') ||
+            (isset($server['HTTP_X_FORWARDED_PROTO']) && $server['HTTP_X_FORWARDED_PROTO'] == 'https');
+        };
+        $scheme = $scheme === "http://" && $isForceHTTP()?  "https://" : "http://";
 
         // some troubles with sym links between private and public
         $doc_root = trim(str_replace('\\', '/', str_replace(array('/public_html', '/private_html'), '', $_SERVER['DOCUMENT_ROOT'])), '/');
