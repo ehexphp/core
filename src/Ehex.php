@@ -7279,7 +7279,11 @@ class Cookie1
 
     public static function deleteAll()
     {
-        if (isset($_SERVER['HTTP_COOKIE'])) {
+        echo "<script>cookieStore.getAll().then(cookies => cookies.forEach(cookie => {
+                    cookieStore.delete(cookie.name);
+                }));</script>";
+
+        /*if (isset($_SERVER['HTTP_COOKIE'])) {
             $cookies = explode(';', $_SERVER['HTTP_COOKIE']);
             foreach ($cookies as $cookie) {
                 $parts = explode('=', $cookie);
@@ -7287,7 +7291,7 @@ class Cookie1
                 setcookie($name, '', time() - 1000);
                 setcookie($name, '', time() - 1000, '/');
             }
-        }
+        }*/
     }
 }
 

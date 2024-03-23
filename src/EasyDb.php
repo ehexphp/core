@@ -2739,9 +2739,10 @@ abstract class AuthModel1 extends Model1
     static function logout($redirectTo = '/')
     {
         Config1::onLogout();
+        Cookie1::deleteAll();
         session_destroy();
         unset($_SESSION);
-        Cookie1::deleteAll();
+        echo '<script>localStorage.clear(); for (const it in $.cookie()) $.removeCookie(it);</script>';
         if (Session1::deleteUserInfo()) {
             Url1::redirectIf($redirectTo, 'Logout Successfully!', true);
             return true;
