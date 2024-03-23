@@ -2741,6 +2741,7 @@ abstract class AuthModel1 extends Model1
         Config1::onLogout();
         session_destroy();
         unset($_SESSION);
+        Cookie1::deleteAll();
         if (Session1::deleteUserInfo()) {
             Url1::redirectIf($redirectTo, 'Logout Successfully!', true);
             return true;

@@ -7370,8 +7370,6 @@ class Session1
             Cookie1::set('usi1', json_encode([$user['id'], isset_or($user['password'])]));
             Session1::set('cookie_login', 1);
         }
-
-
     }
 
 
