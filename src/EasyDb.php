@@ -2715,9 +2715,10 @@ abstract class AuthModel1 extends Model1
      * @param string $errorTitle
      * @return Auth1|mixed|null|User
      */
-    static function getAllowedRoleLogin($column_role_list = ['admin'], $column_role_name = 'role', $on_failed_redirect_to = '/login', callable $onSuccessCallBack = null, callable $onErrorCallBack = null, $errorMessage = 'You do not have permission to visit this page, Please re-login with equal permission', $errorTitle = 'Access Denied')
+    static function getAllowedRoleLogin($column_role_list = ['admin'], $column_role_name = 'role', $on_failed_redirect_to = '/login', callable $onSuccessCallBack = null, callable $onErrorCallBack = null, $errorMessage = 'You do not have permission to visit this page, Please login with the right permission.', $errorTitle = 'Access Denied!')
     {
-        $login = static::getLogin(true, $on_failed_redirect_to, $errorMessage);
+        $error = [$errorTitle, $errorMessage, 'error'];
+        $login = static::getLogin(true, $on_failed_redirect_to, $error);
         if (static::isLoginExist() && in_array($login[$column_role_name], Array1::toArray($column_role_list))) {
             if ($onSuccessCallBack) return $onSuccessCallBack();
             return $login;
@@ -2725,7 +2726,7 @@ abstract class AuthModel1 extends Model1
             if ($onErrorCallBack) $onErrorCallBack();
             else {
                 Session1::setLastAuthUrl(Url1::getPageFullUrl());
-                redirect(url($on_failed_redirect_to), [$errorTitle, $errorMessage, 'error']);
+                redirect(url($on_failed_redirect_to), $error);
             }
         }
     }
