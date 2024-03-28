@@ -121,6 +121,4 @@ class DbAdapter1{
         return $fieldAndTypeList;
     }
 
-
-
 }

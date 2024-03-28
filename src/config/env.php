@@ -14,7 +14,8 @@ function loadEnv(){
     $currentFullUrl = "$protocol://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
     $currentUrl = parse_url($currentFullUrl, PHP_URL_HOST);
-    $urls = ["currentHost"=> "$protocol://$currentUrl"];
+    $currentHost = "$protocol://$currentUrl";
+    $urls = ["currentHost"=> $currentHost];
     $isEnvFound = false;
 
     // Search for .env based on the environment
@@ -43,7 +44,27 @@ function loadEnv(){
         $urls = json_encode($urls);
         echo "<script> console.error('No .env found for this url', $urls) </script>";
         $urls = str_replace("\/", "/", $urls);
-        die("<h1>Oops! No .env found for this url<br/><small>".$urls."</small> <p><small>Fix: Add the currentHost to the Config::ENVs[] var</small></p></h1>");
+        die(
+        "<div style='background: #c8c7c7; padding: 20px; display: inline-block; border-radius: 15px; font-size: 2em;color: #3c3b3b;'>
+    <p style='text-align: center;'>
+        Oops! No .env found for this url.<br/>
+        Update your <strong>'.config.php'</strong> file to fix this issue.<br/>
+        Add <strong>'$currentHost'</strong> to the approriate Config::ENVs[] var.<br/>
+        e.g
+    </p>
+    <small>
+       
+        <pre style='background: #eceaea; padding: 20px; display: inline-block; border-radius: 15px;'>
+        <code>
+         const ENVs = [
+                '.env'=>['$currentHost'],
+                '.prod.env'=>['&lt;!-- your prod domain --&gt;']
+         ];
+         </code>
+        </pre>
+    </small>
+</div>
+");
     }
 
     // Merge Config1 with $_SERVER and $_ENV
