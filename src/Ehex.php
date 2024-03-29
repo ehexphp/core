@@ -369,15 +369,14 @@ class Page1
      */
     static function start(array $styleOrScriptList = [], $sharedVariable = [])
     {
-        $jqueryBuffer = '';
+        $jqueryBuffer = '<!DOCTYPE html>';
         $jqueryBuffer .= '<script> 
                             window.q = []; 
                             window.$ = function(f){ 
                                 q.push(f) 
                             };
                             console.time("[Ehex]"); 
-                         </script>
-                         <!DOCTYPE html>';
+                         </script>';
         $jqueryBuffer .= implode(' ', $styleOrScriptList);
         self::$is_page_wrapper_set = true;
 
