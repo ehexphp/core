@@ -369,13 +369,15 @@ class Page1
      */
     static function start(array $styleOrScriptList = [], $sharedVariable = [])
     {
+        Global1::set('pageStartTime', microtime(true), false);
         $jqueryBuffer = '<!DOCTYPE html>';
         $jqueryBuffer .= '<script> 
                             window.q = []; 
                             window.$ = function(f){ 
                                 q.push(f) 
                             };
-                            console.time("[Ehex]"); 
+                            window.pageStartTime = performance.now();
+                            console.time("[JS]"); 
                          </script>';
         $jqueryBuffer .= implode(' ', $styleOrScriptList);
         self::$is_page_wrapper_set = true;
@@ -402,10 +404,13 @@ class Page1
      */
     static function end(array $scriptOrStyleList = [], $enableToast = true)
     {
+        $executionTime = (microtime(true) - Global1::get('pageStartTime')).' ms';
+
         echo "<script>!window.jQuery && document.write('<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js\"><\/script>');</script>";
         echo '<script type="text/javascript">
                     $(function(){
-                        console.timeEnd("[Ehex]");
+                        console.log("[PHP] '.$executionTime.'" );
+                        console.timeEnd("[JS]");
                     });
 
                     if(window.$.each){
@@ -417,7 +422,11 @@ class Page1
                     }
                </script>';
         echo implode(' ', $scriptOrStyleList);
-        if (static::$FLAG_SHOW_LOAD_TIME) Console1::println('<h3 align="center"> Page Loaded Time : ( <script> document.write(window.load_time); </script> ) </h3><hr/><h6 align="center"><strong>Current Url : </strong>' . Url1::getPageFullUrl() . '</h6>');
+
+        if (static::$FLAG_SHOW_LOAD_TIME) {
+            $loadTime = "\n\n[PHP] $executionTime \n[JS] <script> document.writeln( (performance.now() - window.pageStartTime) + ' ms' ) </script>";
+            Console1::println('<h3 align="center"> Pageload Time'.$loadTime.' </h3><hr/><h6 align="center"><strong>Current Url : </strong>' . Url1::getPageFullUrl() . '</h6>');
+        }
         unset($_SESSION[Session1::$NAME][Url1::getPageFullUrl_noGetParameter()]['print_once']);
         unset($_SESSION['__SHARED_VARIABLE']);
         // popup status

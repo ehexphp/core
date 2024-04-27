@@ -170,6 +170,7 @@ function app_class_list($typeList = [AuthModel1::class, Model1::class, Controlle
     $key = implode('_', $typeList);
     if(!empty($__ENV['app_class_with_interface'][$key])) return $__ENV['app_class_with_interface'][$key];
     $model = [];
+
     foreach (FileManager1::getDirectoriesFiles(app_class_paths(), ['php'], [], -1, true) as $modelFile){
         $name = FileManager1::getFileName($modelFile);
         $name = str_replace( '.php', '', str_replace( '.class.php', '', $name ));

@@ -241,8 +241,11 @@ class Db1
         Console1::println("<h4 align='center'><a href='http://ehex.xamtax.com'>Ehex Documentation</a></h4>");
         echo "<br/><br/>";
 
-        Page1::end();
-        if ($endPage) exit;
+
+        if ($endPage) {
+            Page1::end();
+            exit;
+        }
     }
 
 

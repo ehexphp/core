@@ -6,5 +6,41 @@ git push
 git push origin main -f
 
 git push
-git tag v1.0.53
-git push origin v1.0.53
+git tag v1.0.55
+git push origin v1.0.55
+
+
+
+
+# Working on next
+--------------------------------
+Add Module to .config.php
+ /**
+ * App modules
+ */
+const MODULES = [
+     // System Modules
+    'Dashboard'                     =>  "settings/Dashboard.php",
+    'FrontendPage'                  =>  "settings/FrontendPage.php",
+
+    // User Modules
+    'User'                          =>  "models/User.php",
+    'UserTrait'                     =>  "models/UserTrait.php",
+    'Blog'                          =>  "models/common/blog/Blog.php",
+    'BlogCategory'                  =>  "models/common/blog/BlogCategory.php",
+
+
+    "Inbox"                         => "models/common/message/Inbox.php",
+    "ContactUs"                     => "models/common/message/ContactUs.php",
+    "SupportTicket"                 => "models/common/message/SupportTicket.php",
+    "Faqs"                          => "models/common/faqs/Faqs.php",
+    "Portfolio"                     => "models/common/portfolio/Portfolio.php",
+    "Callback"                      => "models/common/callback/Callback.php",
+    "NewsLetterSubscriber"          =>  "models/common/newsletter/NewsLetterSubscriber.php",
+    "NewsLetter"                    => "models/common/newsletter/NewsLetter.php",
+    "Testimony"                     => "models/common/testimony/Testimony.php",
+    "CopyrightInfringement"         => "models/common/Policy/CopyrightInfringement.php",
+    "GameApi"                       => "api/GameApi.php",
+    "AuthApi"                       => "api/AuthApi.php",
+    "BootstrapPaginationTemplate"   =>  "/resources/views/layouts/bootstrap/inc/BootstrapPaginationTemplate.php"
+];
