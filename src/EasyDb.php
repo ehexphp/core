@@ -1818,7 +1818,7 @@ abstract class Model1 extends Controller1
      */
     static function count($where = '', $columnQuery = ['count(id) as data'], $returnAsSingleColumn = true)
     {
-        $result = static::selectMany(true, $where, $columnQuery);
+        $result = static::selectMany(true, $where, Array1::makeArray($columnQuery));
         return ($returnAsSingleColumn) ? (int)@static::singleColumnList($result, 'data')[0] : $result;  //Db1::exec('Select count(*) from '.User::getTableName())
     }
 
