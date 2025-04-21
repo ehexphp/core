@@ -3,9 +3,8 @@
 
 namespace vendor\ehex\config\database;
 use Db1;
-
 use MySql1;
-use Object1;
+use \Object1;
 
 
 class DbAdapter1
