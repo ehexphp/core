@@ -19,6 +19,8 @@ if(!empty(env('DB_NAME'))){
      */
     try{
 
+
+
         $capsule = new \Illuminate\Database\Capsule\Manager();
         $capsule->addConnection([
             "driver" => env('DB_DRIVER'),

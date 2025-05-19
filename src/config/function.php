@@ -67,13 +67,13 @@ function framework_info(){
         'name'=>'ehex',
         'alias'=>'ex',
         'description'=>'friendly, fast, simple and powerful php framework',
-        'version'=>'2.0',
-        'website'=>'https://ehex.xamtax.com',
+        'version'=>'2.1',
+        'website'=>'https://ehexphp.com',
         'author'=>[
-            'name'=>'Samson Iyanu',
-            'alias'=>'Samtax',
-            'email'=>'samsoniyanu@hotmail.com',
-            'website'=>'https://xamtax.com',
+            'name'=>'ehex php',
+            'alias'=>'',
+            'email'=>'hello@ehexphp.com',
+            'website'=>'https://ehexphp.com',
         ],
     ]);
 }

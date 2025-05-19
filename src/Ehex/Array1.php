@@ -1,56 +1,4 @@
 <?php
-
-/**
- * header('Access-Control-Allow-Origin: *');
- * header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
- * header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
- * header('Access-Control-Max-Age: 1000');
- * header('Access-Control-Allow-Credentials: true');
- * header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
- *  Version ( 1.1 )
- *  Editted Date (23/07/2016)
- *  Created Date (23/07/2015)
- *
- *  Ehex Class is an helping class from XAMTAX (http://xamtax.com)
- *  It consist of different function that will ease coding php.
- *      Function contain are:
- *      String1
- *      FileManager1
- *      FormManager1
- *      Picture1
- *      Object1 or Class1
- *      Array1 e.t.c
- *  All Class ends with 1 to precent clashing with Inbuilt Class
- *  more function will be provided in next version...
- *
- *
- *
- *
- * //Allow access from other website
- * header('Access-Control-Allow-Origin: *');
- * header('Content-type: application/json');
- *
- * //Enable Error
- * ini_set('display_errors', 1);
- * ini_set('display_startup_errors', 1);
- * error_reporting(E_ALL);
- * //error_reporting(E_ALL ^ E_DEPRECATED);
- *
- *
- * Increase PHP EXECUTE TIMEOUT
- * ini_set('max_execution_time', 120); //120 seconds = 2 minutes
- *
- *
- *
- *
- * <script type="text/javascript"> window.$ = function(f) {  f() }  </script>
- *
- *  // Use ob_start() to capture data content
- *  ob_start();
- * get_template_part( 'template-parts/footer/footer', 'info' );
- * $content = ob_get_clean();
- *
- */
 class Array1
 {
 
@@ -405,6 +353,10 @@ class Array1
      */
     static function reUseValueAsKey($valueList)
     {
+        if(!$valueList){
+            return [];
+        }
+
         $newArray = [];
         foreach ($valueList as $key => $value) {
             $newArray[$value] = $value;

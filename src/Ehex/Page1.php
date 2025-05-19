@@ -94,7 +94,7 @@ class Page1
         }
 
         // easy js
-        $jqueryBuffer .= PHP_EOL . '<script src="' . Url1::pathToUrl(PATH_LIB_ASSETS . "js/ehex.min.js?v=2.0") . '"></script>' . PHP_EOL . '<!-- Ehex -->' . PHP_EOL . PHP_EOL;
+        $jqueryBuffer .= PHP_EOL . '<script src="' . Url1::pathToUrl(PATH_LIB_ASSETS . "js/ehex.min.js?v=2.1") . '"></script>' . PHP_EOL . '<!-- Ehex -->' . PHP_EOL . PHP_EOL;
         echo $jqueryBuffer;
         echo "<script>Cookie1.set('url_hash', window.location.hash.replace('#', ''), 1)</script>";
     }

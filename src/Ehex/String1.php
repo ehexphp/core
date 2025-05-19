@@ -741,6 +741,7 @@ class String1
      */
     static function repeat($value = '', $repeatCount = 2)
     {
+        if(!$repeatCount || $repeatCount < 1) return $value;
         $buf = '';
         foreach (range(1, $repeatCount) as $count) $buf .= $value;
         return $buf;

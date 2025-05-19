@@ -1012,6 +1012,11 @@ Math1.format = function(value, pattern) {
     var i = 0, v = value.toString();
     return pattern.replace(/#/g, _ => v[i++]);
 }
+Math1.toMoney = function (amount, currency = "$", decimalCount = 2) {
+    if (isNaN(amount) || amount === null) return 0;
+    amount = decimalCount <= 0? amount: amount.toFixed(decimalCount);
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 Math1.toNumber = function(value) { return value.replace(/\D/g, ""); }
 Math1.getUniqueId = function(){
     return (Date.now ? Date.now() : +(new Date())) + Math.floor((Math.random() * 1000) + 1);

@@ -41,7 +41,7 @@ class DbAdapter1{
      * @return string
      */
     static function getLastErrorMessage($dbHandler){
-        return $dbHandler->error;
+        return @$dbHandler->error;
     }
 
 
