@@ -6,8 +6,8 @@ git push
 git push origin main -f
 
 git push
-git tag v1.0.58
-git push origin v1.0.58
+git tag v1.0.59
+git push origin v1.0.59
 
 
 - Fix layout_asset('', '', '') output

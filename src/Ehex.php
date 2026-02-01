@@ -86,3 +86,37 @@ require __DIR__ . '/Ehex/Value1.php';
  */
 require __DIR__ . '/Ehex/Math1.php';
 require __DIR__ . '/Ehex/Date1.php';
+
+/**
+ * Ehex Facade Class
+ * Provides backward compatibility by routing static calls to the split classes.
+ */
+class Ehex
+{
+    private static $classMap = [
+        'Array1', 'ArrayObject1', 'Class1', 'Color1', 'Console1', 'Converter1', 'Cookie1',
+        'DateManager1', 'exArrayObject1', 'FileManager1', 'FilePref1', 'Form1', 'Framework1',
+        'Function1', 'Global1', 'Header1', 'Html1', 'Number1', 'MySql1', 'Object1', 'Page1',
+        'Picture1', 'Popup1', 'RecursiveArrayObject1', 'RegEx1', 'ResultObject1', 'ResultStatus1',
+        'ServerRequest1', 'Session1', 'SessionPreferenceSave1', 'String1', 'TaskManager1',
+        'Url1', 'Validation1', 'Value1', 'Math1', 'Date1'
+    ];
+
+    /**
+     * Magic method to handle static calls to Ehex
+     * @param string $name Method name
+     * @param array $arguments Method arguments
+     * @return mixed
+     * @throws BadMethodCallException
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        foreach (self::$classMap as $className) {
+            if (method_exists($className, $name)) {
+                return call_user_func_array([$className, $name], $arguments);
+            }
+        }
+
+        throw new BadMethodCallException("Method Ehex::{$name} does not exist in any mapped classes.");
+    }
+}
