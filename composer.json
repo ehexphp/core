@@ -17,7 +17,7 @@
     "require": {
         "php": ">=8.1",
         "illuminate/database": "^11.0",
-        "strana/strana": "^1.0",
+        "usmanhalalit/strana": "^1.0",
         "symfony/routing": "^7.0",
         "symfony/http-foundation": "^7.0"
     },
