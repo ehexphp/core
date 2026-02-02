@@ -1,0 +1,1 @@
+<?php class Config1 { const AUTO_PAGE_WRAPPER = false; const DEBUG_MODE = true; static function onPageStart() { return []; } static function onPageEnd() { } static function onRoute($r) { } }

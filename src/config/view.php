@@ -47,7 +47,12 @@
 
 
     use Jenssegers\Blade\Blade;
-    Global1::set('$bladeView', new Blade($view_path, $view_cachePath));
+    use Jenssegers\Blade\Container;
+
+    $view_container = new Container;
+    Container::setInstance($view_container);
+
+    Global1::set('$bladeView', new Blade($view_path, $view_cachePath, $view_container));
 
 
 
